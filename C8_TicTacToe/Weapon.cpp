@@ -35,21 +35,76 @@ void Weapon::setEffect()
 	}
 }
 
-Weapon::Weapon(int type):DLLObjetos()
+Weapon::Weapon(int type) :DLLObjetos()
 {
 	_type = type;
-	switch (_type)
+
+	if (_type == 1)
 	{
-		case 1:
-			_weaponName = "Khopesh";
-			srand(time(0));
-			int damage = (rand() % 20) + 6;
-			setDamage(damage);
-			setEffect();
-			SetPeso(10);
-			SetName(getWName());
-			break;
+		_weaponName = "Khopesh";
+		srand(time(0));
+		int damage = (rand() % 20) + 6;
+		setDamage(damage);
+		setEffect();
+		SetPeso(10);
+		SetName(getWName());
 	}
+
+	if (_type == 2)
+	{
+		_weaponName = "Arco";
+		srand(time(0));
+		setDamage(rand() % 6);
+		switch (rand())
+		{
+		case 0:
+			setDamage(0);
+			break;
+		case 1:
+			setDamage(0);
+			break;
+		case 2:
+			setDamage(15);
+			break;
+		case 3:
+			setDamage(15);
+			break;
+		case 4:
+			setDamage(15);
+			break;
+		case 5:
+			setDamage(15);
+			break;
+		case 6:
+			setDamage(15);
+			break;
+		}
+		setEffect();
+		SetPeso(7);
+		SetName(getWName());
+	}
+
+
+	if (_type == 3)
+	{
+		_weaponName = "Cuchillo";
+		srand(time(0));
+		setDamage(rand() % 10);
+		setEffect();
+		SetPeso(5);
+		SetName(getWName());
+	}
+
+	if (_type == 4)
+	{
+			_weaponName = "Arma especial";
+			srand(time(0));
+			setDamage(rand() % 40);
+			setEffect();
+			SetPeso(20);
+			SetName(getWName());
+	}
+
 }
 
 void Weapon::setDamage(int damage)

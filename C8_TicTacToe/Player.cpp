@@ -206,14 +206,23 @@ void Player::SetExp(int exp)
 
 int Player::makeDamageWhitSpell()
 {
-	int Result = 0;
+	int Result = 1;
 	if (_currentspell.EffectActiveWS())
 	{
 		if (_currentspell.getEffectTypeWS() == 1)
 		{
-			srand(time(0));
-			Result += (rand() % 10);
-			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de quemadura";
+			if (_currentMana > 10)
+			{
+				_currentMana -= 10;
+				srand(time(0));
+				Result += (rand() % 10);
+				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de quemadura";
+			}
+			else
+			{
+				std::cout << "No tienes suficiente mana" << std::endl;
+			}
+			
 		}
 	}
 
@@ -221,9 +230,17 @@ int Player::makeDamageWhitSpell()
 	{
 		if (_currentspell.getEffectTypeWS() == 2)
 		{
-			srand(time(0));
-			Result += (rand() % 10);
-			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de envenenamiento";
+			if (_currentMana > 10)
+			{
+				_currentMana -= 10;
+				srand(time(0));
+				Result += (rand() % 10);
+				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de envenenamiento";
+			}
+			else
+			{
+				std::cout << "No tienes suficiente mana" << std::endl;
+			}
 		}
 	}
 
@@ -231,15 +248,22 @@ int Player::makeDamageWhitSpell()
 	{
 		if (_currentspell.getEffectTypeWS() == 3)
 		{
-			srand(time(0));
-			Result += (rand() % 10);
-			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de hielo";
+			if (_currentMana > 10)
+			{
+				srand(time(0));
+				Result += (rand() % 10);
+				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de hielo";
+			}
+			else
+			{
+				std::cout << "No tienes suficiente mana" << std::endl;
+			}
 		}
 	}
 
 	else
 	{
-		Result += _currentspell.getDamageWS();
+		Result += (_currentspell.getDamageWS() * _fuerza);
 	}
 
 	return Result;

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "C8_TicTacToe.h"
 #include <windowsx.h>
-#include "TEXTCOUT.h"
+#include "TEXTCOUT2.h"
 
 #define MAX_LOADSTRING 100
 
@@ -58,7 +58,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 const int CELL_SIZE = 10;
-HICON hIcon1, hIcon2;
+HICON hIcon1, hIcon2, hIconEye;
 HWND TextBox;
 HWND Activar;
 char textReadead[20];
@@ -66,12 +66,13 @@ char coutMessage[100];
 RECT rcClient;
 HBRUSH hbrWhite, hbrGray;
 
-TEXTCOUT main;
+TEXTCOUT2 main;
 bool up = false;
 bool down = false;
 Player hero("name");
 bool win = false;
 bool combat = false;
+bool dead = false;
 //int LINES = 28;
 
 //-----------------------------For the Scroll------------------------------------
@@ -111,7 +112,7 @@ list<Habitación> mapa1
 	Habitación
 	(2,
 	string("Holi, vas a morir 2"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(3), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 1, 0), Puerta(true, 3, 1), Puerta(true, 4, 2)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
@@ -119,7 +120,7 @@ list<Habitación> mapa1
 	Habitación
 	(3,
 	string("Holi, vas a morir 3"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 2, 1), Puerta(true, 5, 3)},
 	list<Enemy>{Enemy(1,1)},
 	vector<Llave>{}),
@@ -127,25 +128,25 @@ list<Habitación> mapa1
 	Habitación
 	(4,
 	string("Holi, vas a morir 4"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 2, 2), Puerta(true, 6, 2), Puerta(true, 7, 2)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2,1)},
 	vector<Llave>{}),
 
 	Habitación
 	(5,
 	string("Holi, vas a morir 5"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(3), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 3, 3), Puerta(true, 8, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
 	(6,
 	string("Holi, vas a morir 6"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(2), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 9, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -153,7 +154,7 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 7"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 10, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -161,15 +162,14 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 8"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 5, 3), Puerta(true, 11, 3), Puerta(true, 12, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
-
-	Habitación
+Habitación
 	(9,
 	string("Holi, vas a morir 9"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(3), new Weapon(3)},
 	forward_list<Puerta>{Puerta(true, 6, 3), Puerta(true, 17, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -177,15 +177,15 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 10"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 7, 3), Puerta(true, 13, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
 	(11,
 	string("Holi, vas a morir 11"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(2), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -193,7 +193,7 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 12"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -201,23 +201,23 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 13"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 10, 3), Puerta(true, 14, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(14,
 	string("Holi, vas a morir 14"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(3), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 13, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(15,
 	string("Holi, vas a morir 15"),
-	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(2), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 14, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -225,23 +225,22 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 16"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 15, 3), Puerta(true, 17, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
-
-	Habitación
+Habitación
 	(17,
 	string("Holi, vas a morir 17"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2, 1), Enemy(2, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(18,
 	string("Holi, vas a morir 18"),
-	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(3), new Weapon(2) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -249,7 +248,7 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 19"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(2, 2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -257,23 +256,23 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 20"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(1, 2), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(21,
 	string("Holi, vas a morir 21"),
-	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(2), new Weapon(3) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(1, 1), Enemy(2, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(22,
 	string("Holi, vas a morir 22"),
-	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(4)},
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(2, 1), Enemy(2, 2)},
 	vector<Llave>{}),
 
 	Habitación
@@ -281,7 +280,7 @@ list<Habitación> mapa1
 	string("Holi, vas a morir 23"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy()},
+	list<Enemy>{Enemy(3, 1)},
 	vector<Llave>{}),
 };
 
@@ -391,7 +390,7 @@ void searchMinorDoor(list<Habitación> mapa1, Habitación H, int n, Player &hero)
 				}
 				catch (std::exception& e)
 				{
-					std::cout << "==========EXCEPTION: " << e.what() << '\n';
+					std::cout << "==========EXCEPTION: " << e.what() << '\n';					
 				}
 			}
 
@@ -399,6 +398,7 @@ void searchMinorDoor(list<Habitación> mapa1, Habitación H, int n, Player &hero)
 		else
 		{
 			cout << "El camino está cerrado, no puedes pasar, hay una puerta bloqueada en la habitación: " << H.GetNumH() << endl;
+			main.addText("El camino está cerrado, no puedes pasar, hay una puerta bloqueada en la habitación: " + H.GetNumH() + '\n');
 		}
 	}
 
@@ -488,6 +488,7 @@ void nextRoom(list<Habitación> &mapa1, int n, Player &hero)
 		else
 		{
 			cout << "La puerta esta cerrada, busca la llave, o si la tienes, abre la puerta" << endl;
+			main.addText("La puerta esta cerrada, busca la llave, o si la tienes, abre la puerta \n");
 		}
 	}
 
@@ -1146,13 +1147,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//Dropear
 	Diccionario.insert(pair <int, string>(13, "Dropear"));
 
-	//Guardar
-	Diccionario.insert(pair <int, string>(14, "guardar"));
-
-	//Cargar
-	Diccionario.insert(pair <int, string>(15, "cargar"));
-
-
 	//Hechizo
 	Diccionario.insert(pair <int, string>(16, "lanzar"));
 	Diccionario.insert(pair <int, string>(17, "hechizo"));
@@ -1261,25 +1255,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+	WNDCLASSEXW wcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_C8TICTACTOE));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW); //Cambiar el cursor
-    //wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.hbrBackground  = (HBRUSH)(GetStockObject(GRAY_BRUSH));
-    //wcex.hbrBackground  = (HBRUSH)(GetStockObject(GRADIENT_FILL_TRIANGLE));
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_C8TICTACTOE);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.style = CS_HREDRAW | CS_VREDRAW ;
+	//wcex.style = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = hInstance;
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON2));
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW); //Cambiar el cursor
+	//wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+	wcex.hbrBackground = (HBRUSH)(GetStockObject(GRAY_BRUSH));
+	//wcex.hbrBackground  = (HBRUSH)(GetStockObject(GRADIENT_FILL_TRIANGLE));
+	wcex.lpszMenuName = MAKEINTRESOURCEW(IDI_ICON2);
+	wcex.lpszClassName = szWindowClass;
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON2));
 
-    return RegisterClassExW(&wcex);
+	return RegisterClassExW(&wcex);
 }
 
 //
@@ -1296,9 +1291,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   ::SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE)&~WS_SIZEBOX);
    if (!hWnd)
    {
       return FALSE;
@@ -1368,6 +1362,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_SMALL));
 			hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_C8TICTACTOE));
+			//hIconEye = LoadIcon(hInst, MAKEINTRESOURCE(IDI_C8TICTACTOE));
 
 			if (GetClientRect(hWnd, &rcClient))
 			{
@@ -1376,42 +1371,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			Activar = CreateWindowA("BUTTON", "ACTIVAR", WS_VISIBLE | WS_CHILD | WS_BORDER, (rcClient.right / 2) + 510, rcClient.bottom - 20, 70, 20, hWnd, (HMENU)1, NULL, NULL);
 			//HWND hWndExample = CreateWindowA("STATIC", "Text Goes Here \nText is still here", WS_VISIBLE | WS_CHILD | SS_LEFT, 100, 100, 500, 200, hWnd, NULL, NULL, NULL);
 			//SetWindowText(hWndExample, TEXT("Control string"));
-			TEXTCOUT MAIN(hWnd, 100, 100, 1000, 500);
+			TEXTCOUT2 MAIN("HOLA01\n");
 			main = MAIN;
-			main.addText("HOLA");
-			main.addText("\nHOLA2");
-			main.addText("\nHOLA1");
-			main.addText("\nHOLA3");
-			main.addText("\nHOLA4");
-			main.addText("\nHOLA5");
-			main.addText("\nHOLA6");
-			main.addText("\nHOLA7");
-			main.addText("\nHOLA8");
-			main.addText("\nHOLA9");
-			main.addText("\nHOLA10");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
-			main.addText("\nHOLA11");
+			main.addText("HOLA2\n");
 			break;
 		}
 
@@ -1442,12 +1404,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					{
 						combat = CheckEnemy(mapa1, hero.GetCuartoActual());
 
-						if (combat == false && win == false)
+						if (combat == false && win == false && dead == false)
 						{							
 							//getline(std::cin, text);
 							try
 							{
 								DictionarySearch2(textReadead, Diccionario, hero, mapa1, false);
+								if (hero.GetCuartoActual() == 23)
+								{
+									cout << "GANASTE" << endl;
+								}
 								//UpdateWindow(hWnd);
 								/*InvalidateRect(hWnd, NULL, TRUE);
 								RedrawWindow(hWnd, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ERASENOW | RDW_UPDATENOW);
@@ -1464,7 +1430,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							//cout << "hero.GetCuartoActual(): " << hero.GetCuartoActual() << "\n";
 						}
 
-						else if (combat == true)
+						else if (combat == true && dead == false)
 						{
 							bool atack = true;
 							list<Enemy> enemigosActuales;
@@ -1498,6 +1464,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 								{
 									atack = true;
 									hero.takeDamage(enemigosActualesitr->attack());
+									if (hero.getVida() < 0)
+									{
+										dead = true;
+									}
 								}
 								else
 								{
@@ -1506,7 +1476,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 								if (atack)
 								{
-									string message = "El " + enemigosActualesitr->GetName() + "(Enemigo [" + to_string(enemigosActualesitr->Getid()) + "], HP[" + to_string(enemigosActualesitr->GetVida()) + "])" + " te ataco";
+									string message = "El " + enemigosActualesitr->GetName() + "(Enemigo [" + to_string(enemigosActualesitr->Getid()) + "], HP[" + to_string(enemigosActualesitr->GetVida()) + "])" + " te ataco tu vida es [" + to_string(hero.getVida()) + "]";
 									strcpy_s(coutMessage, message.c_str());
 
 									MessageBoxA(hWnd, coutMessage, textReadead, MB_OK);
@@ -1544,6 +1514,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							}
 						}
 					}
+					else
+					{
+					cout << "GANASTEEEEEEEEEEEEEEE" << endl;
+					}
+
 
 					MessageBeep(MB_ICONASTERISK);
 					MessageBoxA(hWnd, textReadead, textReadead, MB_OK);
@@ -1683,14 +1658,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case VK_UP:
 			{
 				up = true;
-				main.scroll(0, -5);
+				//main.scroll(0, -5);
+				main.SetIndex(main.GetIndex() + 1);
 				break;
 			}
 
 			case VK_DOWN:
 			{
 				down = true;
-				main.scroll(0, 5);
+				main.SetIndex(main.GetIndex() - 1);
 				break;
 			}
 			}
@@ -1741,7 +1717,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SetWindowExtEx(hdc, 100, 100, NULL);
 				SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 				FillRect(hdc, &rc, hbrWhite);
-
+				
 				for (int i = -5; i < 100; i += 5)
 				{
 					for (int j = -5; j < 100; j += 5)
@@ -1786,6 +1762,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					if (GetClientRect(hWnd, &rcClient))
 					{
 					
+						main.addText("sdsdsds");
+						main.display(hdc, rc);
 
 
 						int numberH = 0;
@@ -1796,6 +1774,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						}
 
 						
+						TEXTCOUT2 d("Holis");
+						d.addText("Holis");
+						d.display(hdc, rc);
+
+
+
 						for (int i = 0; i <= 8; i++)
 						{
 							mapaGraph.bottom = 0 + (40 * i);

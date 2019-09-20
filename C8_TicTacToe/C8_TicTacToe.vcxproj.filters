@@ -48,10 +48,10 @@
     <ClInclude Include="Weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TEXTCOUT.h">
+    <ClInclude Include="Spells.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Spells.h">
+    <ClInclude Include="TEXTCOUT2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,10 +83,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TEXTCOUT.cpp">
+    <ClCompile Include="Spells.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Spells.cpp">
+    <ClCompile Include="TEXTCOUT2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -100,6 +100,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="C8_TicTacToe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\ojo_egipcio_Mog_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\Ojo_egipcio.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
 #include <time.h>
+#include <list>
+#include "DLLObjetos2.h"
 using std::string;
 
 class Enemy
 {
 private:
+	std::list <DLLObjetos*>* _DLLObjetos;
 	string _name = "NULL";
 	int _id = 0;
 	int _type = 0;

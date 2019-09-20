@@ -41,6 +41,7 @@ void TEXTCOUT::addText(string text)
 	std::wstring stemp = std::wstring(_message.begin(), _message.end());
 	LPCWSTR sw = stemp.c_str();
 	SetWindowText(_FinalText, (sw));
+	RedrawWindow(_FinalText, NULL, NULL, RDW_VALIDATE | RDW_UPDATENOW);
 }
 
 void TEXTCOUT::Move(int POSX, int POSY, int SIZEX, int SIZEY)
@@ -50,6 +51,10 @@ void TEXTCOUT::Move(int POSX, int POSY, int SIZEX, int SIZEY)
 	_SIZEX = SIZEX;
 	_SIZEY = SIZEY;
 	MoveWindow(_FinalText, _POSX, _POSY, _SIZEX, _SIZEY, true);
+	//SetWindowText(_FinalText, (sw));
+	//RedrawWindow(_FinalText, NULL, NULL, RDW_VALIDATE | RDW_UPDATENOW);
+	//InvalidateRect(_FinalText, NULL, TRUE);
+	
 }
 
 void TEXTCOUT::Clear()
@@ -62,7 +67,24 @@ void TEXTCOUT::Clear()
 
 void TEXTCOUT::scroll(int dx, int dy)
 {
+	RECT *rectclipling = new RECT;
+	rectclipling->bottom = 100;
+	rectclipling->left = 0;
+	rectclipling->right = 100;
+	rectclipling->top = 0;
 	ScrollWindowEx(_FinalText, dx, dy, NULL, NULL, NULL, NULL, NULL);
+	/*std::wstring stemp = std::wstring(_message.begin(), _message.end());
+	LPCWSTR sw = stemp.c_str();
+	SetWindowText(_FinalText, (sw));*/
+	//RedrawWindow(_FinalText, NULL, NULL, RDW_VALIDATE | RDW_UPDATENOW);
+	//RedrawWindow(_FinalText, NULL, NULL, RDW_VALIDATE | RDW_UPDATENOW);
+	//UpdateWindow(_FinalText);
+	//InvalidateRect(_FinalText, NULL, TRUE);
+}
+
+HWND &TEXTCOUT::GetWindow()
+{
+	return _FinalText;
 }
 
 TEXTCOUT::~TEXTCOUT()

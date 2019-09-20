@@ -23,7 +23,7 @@
     <ProjectGuid>{7F2D21D6-C26C-429E-8BC9-FECC96A6F6A3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>C8TicTacToe</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -90,10 +90,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Carlo\source\repos\5_Trimestre\POO2\C8_TicTacToe\External_Libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DLLObjetos2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Carlo\source\repos\5_Trimestre\POO2\C8_TicTacToe\External_Libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,11 +154,11 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Habitación.h" />
     <ClInclude Include="Llave.h" />
-    <ClInclude Include="Objeto.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Puerta.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Spells.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TEXTCOUT.h" />
@@ -166,10 +169,10 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Habitación.cpp" />
     <ClCompile Include="Llave.cpp" />
-    <ClCompile Include="Objeto.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Puerta.cpp" />
+    <ClCompile Include="Spells.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

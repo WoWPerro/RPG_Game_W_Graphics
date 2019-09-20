@@ -1,10 +1,11 @@
 #pragma once
 #include <list>
 #include <vector>
-#include "Objeto.h"
+#include "DLLObjetos2.h"
 #include "Llave.h"
 #include "Habitación.h"
 #include "Weapon.h"
+#include "Spells.h"
 #include <time.h>
 
 class Player
@@ -16,9 +17,9 @@ public:
 private:
 	std::string _name;
 	int _cuartoActual = 1;
-	std::list <Objeto *> _objetos;
+	std::list <DLLObjetos *> _DLLObjetos;
 	std::vector <Llave> _llaves;
-	int _fuerzaCarga = 100;
+	int _maxCarga = 100;
 	int _cargaActual = 0;
 	float _fuerza = 1;
 	int _currentMana = 10;
@@ -28,15 +29,15 @@ private:
 	int _vida = 100;
 	int _maxVida = 100;
 	Weapon _currentweapon;
-
+	Spells _currentspell;
 public:
 	void move(int cuarto);
 	void SetCuartoActual(int cuarto);
 	int GetCuartoActual();
-	void drop(Objeto *);
-	void take(Objeto *);
+	void drop(DLLObjetos *);
+	void take(DLLObjetos *);
 	void takeKey(Llave Llave);
-	vector <Llave> GetKey();
+	vector <Llave> GetKeys();
 	void takeDamage(int damage);
 	int makeDamage();
 	int getVida();
@@ -44,8 +45,21 @@ public:
 	void SetWeapon(Weapon &weapon);
 	void showInventory();
 	bool SetCargactual(int carga);
-	list <Objeto*> GetObjects();
-	
+	list <DLLObjetos*> &GetObjects();
+	string GetName();
+	int GetCarga();
+	int GetMaxCarga();
+	float GetFuerza();
+	int GetMana();
+	int GetManaMax();
+	int GetExp();
+	int GetMaxExp();
+	int GetMaxVida();
+	Weapon GetCurrentWeapon();
+	void LevelUp();
+	void SetExp(int exp);
+	void SetSpells(Spells& spell);
+	int makeDamageWhitSpell();
 	~Player();
 };
 

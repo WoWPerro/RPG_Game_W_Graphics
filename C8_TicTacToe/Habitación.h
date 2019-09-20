@@ -1,5 +1,5 @@
 #pragma once
-#include "Objeto.h"
+#include "DLLObjetos2.h"
 #include "Enemy.h"
 #include "Puerta.h"
 #include "Llave.h"
@@ -25,7 +25,7 @@ private:
 	bool _read = false;
 	string _descripcion;
 
-	std::list <Objeto*>* _objetos;
+	std::list <DLLObjetos*>* _DLLObjetos;
 	std::vector <Llave> _llaves;
 	std::forward_list <Puerta> _puertas;
 	std::list <Enemy> _enemigos;
@@ -33,13 +33,13 @@ private:
 public:
 
 	Habitación();
-	Habitación(int numH, string desc, list<Objeto*>* obj, forward_list<Puerta> pu, list<Enemy> en, vector <Llave> Llave) :
-	num(numH), _descripcion(desc), _objetos(obj), _puertas(pu), _enemigos(en), _llaves(Llave){};
+	Habitación(int numH, string desc, list<DLLObjetos*>* obj, forward_list<Puerta> pu, list<Enemy> en, vector <Llave> Llave) :
+	num(numH), _descripcion(desc), _DLLObjetos(obj), _puertas(pu), _enemigos(en), _llaves(Llave){};
 	/**
 	Returns the volume of a sphere with the specified radius.
 
 	@param NULL
-	@return string con todos los objetos dentro de la habitación
+	@return string con todos los DLLObjetos dentro de la habitación
 	*/
 	void LeerHabitacion();
 	void SetDescription(std::string descripcion);
@@ -47,8 +47,8 @@ public:
 	int GetNumH();
 	void Add(Puerta puerta);
 	void Remove(Puerta puerta);
-	void Add(Objeto *obj);
-	void Remove(Objeto *obj);
+	void Add(DLLObjetos *obj);
+	void Remove(DLLObjetos *obj);
 	void Add(Llave llave);
 	void Remove(Llave llave);
 	void Add(Enemy enemy);
@@ -56,9 +56,11 @@ public:
 	std::forward_list <Puerta> &Getpuertas();
 	list <Enemy> &GetEnemies();
 	vector <Llave> &GetLlaves();
-	std::list <Objeto*> *GetObjetos();
+	std::list <DLLObjetos*> *GetDLLObjetos();
 	std::list <Weapon*> GetWeapons();
-
+	bool GetplayerEnters();
+	bool Getread();
+	string Getdescripcion();
 	~Habitación();
 };
 

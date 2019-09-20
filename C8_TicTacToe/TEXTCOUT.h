@@ -25,6 +25,7 @@ public:
 	void addText(string text);
 	void scroll(int x, int y);
 	void Clear();
+	HWND &GetWindow();
 	~TEXTCOUT();
 };
 

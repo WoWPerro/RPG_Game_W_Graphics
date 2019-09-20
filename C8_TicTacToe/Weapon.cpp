@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Weapon.h"
 
-Weapon::Weapon():Objeto()
+Weapon::Weapon():DLLObjetos()
 {
 }
 
@@ -35,7 +35,7 @@ void Weapon::setEffect()
 	}
 }
 
-Weapon::Weapon(int type):Objeto()
+Weapon::Weapon(int type):DLLObjetos()
 {
 	_type = type;
 	switch (_type)
@@ -43,7 +43,8 @@ Weapon::Weapon(int type):Objeto()
 		case 1:
 			_weaponName = "Khopesh";
 			srand(time(0));
-			setDamage(rand() % 20);
+			int damage = (rand() % 20) + 6;
+			setDamage(damage);
 			setEffect();
 			SetPeso(10);
 			SetName(getWName());
@@ -107,7 +108,7 @@ void Weapon::showStats()
 			break;
 		}
 	}
-	cout << "Peso: " << Objeto::GetPeso() << endl;
+	cout << "Peso: " << DLLObjetos::GetPeso() << endl;
 }
 
 Weapon::~Weapon()

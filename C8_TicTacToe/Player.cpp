@@ -27,14 +27,14 @@ void Player::move(int cuarto)
 	SetCuartoActual(cuarto);
 }
 
-void Player::drop(Objeto *)
+void Player::drop(DLLObjetos *)
 {
 
 }
 
-void Player::take(Objeto * objeto)
+void Player::take(DLLObjetos * DLLObjetos)
 {
-	_objetos.push_back(objeto);
+	_DLLObjetos.push_back(DLLObjetos);
 }
 
 void Player::takeKey(Llave Llave)
@@ -42,7 +42,7 @@ void Player::takeKey(Llave Llave)
 	_llaves.push_back(Llave);
 }
 
-vector <Llave> Player::GetKey()
+vector <Llave> Player::GetKeys()
 {
 	return _llaves;
 }
@@ -88,20 +88,20 @@ void Player::SetWeapon(Weapon &weapon)
 	_currentweapon = weapon;
 }
 
-list <Objeto*> Player::GetObjects()
+list <DLLObjetos*> &Player::GetObjects()
 {
-	return _objetos;
+	return _DLLObjetos;
 }
 
 void Player::showInventory()
 {
 	list <Weapon*> weaponlist;
 	list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
-	for (Objeto* objeto : _objetos)
+	for (DLLObjetos* DLLObjetos : _DLLObjetos)
 	{
-		if (objeto == dynamic_cast<Weapon*>(objeto))
+		if (DLLObjetos == dynamic_cast<Weapon*>(DLLObjetos))
 		{
-			weaponlist.insert(weaponlistitr, dynamic_cast<Weapon*>(objeto));
+			weaponlist.insert(weaponlistitr, dynamic_cast<Weapon*>(DLLObjetos));
 			if (weaponlistitr != weaponlist.end())
 			{
 				weaponlistitr++;
@@ -123,7 +123,7 @@ void Player::showInventory()
 bool Player::SetCargactual(int carga)
 {
 	_cargaActual += carga;
-	if (_cargaActual > _fuerzaCarga)
+	if (_cargaActual > _maxCarga)
 	{
 		return false;
 	}
@@ -133,7 +133,119 @@ bool Player::SetCargactual(int carga)
 	}
 }
 
+string Player::GetName()
+{
+	return _name;
+}
+
+int Player::GetExp()
+{
+	return _exp;
+}
+
+int Player::GetCarga()
+{
+	return _cargaActual;
+}
+
+int Player::GetMaxCarga()
+{
+	return _maxCarga;
+}
+
+float Player::GetFuerza()
+{
+	return _fuerza;
+}
+
+int Player::GetMana()
+{
+	return _currentMana;
+}
+
+int Player::GetManaMax()
+{
+	return _maxMana;
+}
+
+int Player::GetMaxExp()
+{
+	return _maxExp;
+}
+
+int Player::GetMaxVida()
+{
+	return _maxVida;
+}
+
+Weapon Player::GetCurrentWeapon()
+{
+	return _currentweapon;
+}
+
+void Player::LevelUp()
+{
+	_maxCarga = _maxCarga + 10;
+	_maxExp = _maxExp + 10;
+	_maxMana = _maxMana + 10;
+	_maxVida = _maxVida + 10;
+	_fuerza += .5f;
+	_currentMana = _maxMana;
+	_vida = _maxVida;
+}
+
+void Player::SetExp(int exp)
+{
+	_exp = exp;
+	if (_exp > _maxExp)
+	{
+		LevelUp();
+		_exp = 0;
+	}
+}
+
+int Player::makeDamageWhitSpell()
+{
+	int Result = 0;
+	if (_currentspell.EffectActiveWS())
+	{
+		if (_currentspell.getEffectTypeWS() == 1)
+		{
+			srand(time(0));
+			Result += (rand() % 10);
+			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de quemadura";
+		}
+	}
+
+	if (_currentspell.EffectActiveWS())
+	{
+		if (_currentspell.getEffectTypeWS() == 2)
+		{
+			srand(time(0));
+			Result += (rand() % 10);
+			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de envenenamiento";
+		}
+	}
+
+	if (_currentspell.EffectActiveWS())
+	{
+		if (_currentspell.getEffectTypeWS() == 3)
+		{
+			srand(time(0));
+			Result += (rand() % 10);
+			std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de hielo";
+		}
+	}
+
+	else
+	{
+		Result += _currentspell.getDamageWS();
+	}
+
+	return Result;
+}
+
 Player::~Player()
 {
-
+	
 }

@@ -1,12 +1,12 @@
 #pragma once
-#include "Objeto.h"
+#include "DLLObjetos2.h"
 #include <time.h>
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
-class Weapon : public Objeto
+class Weapon : public DLLObjetos
 {
 private:
 	std::string _weaponName = "NONAME";

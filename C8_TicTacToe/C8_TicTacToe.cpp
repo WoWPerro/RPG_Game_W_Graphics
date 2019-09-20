@@ -29,6 +29,10 @@
 #include <exception>
 #include <set>
 #include <string>
+#include <fstream>
+
+//DLL
+#include "DLLObjetos2.h"
 
 using std::pair;
 using std::vector;
@@ -39,6 +43,8 @@ using std::map;
 using std::set;
 using std::forward_list;
 using std::stringstream;
+using std::ofstream;
+using std::ifstream;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -58,7 +64,36 @@ HWND Activar;
 char textReadead[20];
 char coutMessage[100];
 RECT rcClient;
+HBRUSH hbrWhite, hbrGray;
+
 TEXTCOUT main;
+bool up = false;
+bool down = false;
+Player hero("name");
+bool win = false;
+bool combat = false;
+//int LINES = 28;
+
+//-----------------------------For the Scroll------------------------------------
+//SCROLLINFO scrollinfo;
+//static int xClient;     // width of client area 
+//static int yClient;     // height of client area 
+//static int xClientMax;  // maximum width of client area 
+//
+//static int xChar;       // horizontal scrolling unit 
+//static int yChar;       // vertical scrolling unit 
+//static int xUpper;      // average width of uppercase letters 
+//
+//static int xPos;        // current horizontal scrolling position 
+//static int yPos;        // current vertical scrolling position 
+//
+//int x, y;               // horizontal and vertical coordinates
+//
+//int FirstLine;          // first line in the invalidated area 
+//int LastLine;           // last line in the invalidated area 
+//HRESULT hr;
+//size_t abcLength;        // length of an abc[] item 
+
 //------------------------------Dictionary-----------------------------------
 multimap <int, string> Diccionario;
 
@@ -68,7 +103,7 @@ list<Habitación> mapa1
 	Habitación
 	(1,
 	string("Holi, vas a morir 1"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(false, 2, 0)},
 	list<Enemy>{},
 	vector<Llave>{Llave(0)}),
@@ -76,7 +111,7 @@ list<Habitación> mapa1
 	Habitación
 	(2,
 	string("Holi, vas a morir 2"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 1, 0), Puerta(true, 3, 1), Puerta(true, 4, 2)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
@@ -84,7 +119,7 @@ list<Habitación> mapa1
 	Habitación
 	(3,
 	string("Holi, vas a morir 3"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 2, 1), Puerta(true, 5, 3)},
 	list<Enemy>{Enemy(1,1)},
 	vector<Llave>{}),
@@ -92,7 +127,7 @@ list<Habitación> mapa1
 	Habitación
 	(4,
 	string("Holi, vas a morir 4"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 2, 2), Puerta(true, 6, 2), Puerta(true, 7, 2)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -100,7 +135,7 @@ list<Habitación> mapa1
 	Habitación
 	(5,
 	string("Holi, vas a morir 5"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 3, 3), Puerta(true, 8, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -108,7 +143,7 @@ list<Habitación> mapa1
 	Habitación
 	(6,
 	string("Holi, vas a morir 6"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 9, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -116,7 +151,7 @@ list<Habitación> mapa1
 	Habitación
 	(7,
 	string("Holi, vas a morir 7"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 10, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -124,7 +159,7 @@ list<Habitación> mapa1
 	Habitación
 	(8,
 	string("Holi, vas a morir 8"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 5, 3), Puerta(true, 11, 3), Puerta(true, 12, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -132,7 +167,7 @@ list<Habitación> mapa1
 	Habitación
 	(9,
 	string("Holi, vas a morir 9"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 6, 3), Puerta(true, 17, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -140,7 +175,7 @@ list<Habitación> mapa1
 	Habitación
 	(10,
 	string("Holi, vas a morir 10"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 7, 3), Puerta(true, 13, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -148,7 +183,7 @@ list<Habitación> mapa1
 	Habitación
 	(11,
 	string("Holi, vas a morir 11"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -156,7 +191,7 @@ list<Habitación> mapa1
 	Habitación
 	(12,
 	string("Holi, vas a morir 12"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -164,7 +199,7 @@ list<Habitación> mapa1
 	Habitación
 	(13,
 	string("Holi, vas a morir 13"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 10, 3), Puerta(true, 14, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -172,7 +207,7 @@ list<Habitación> mapa1
 	Habitación
 	(14,
 	string("Holi, vas a morir 14"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 13, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -180,7 +215,7 @@ list<Habitación> mapa1
 	Habitación
 	(15,
 	string("Holi, vas a morir 15"),
-	new list<Objeto*>{new Weapon(1), new Weapon(1)},
+	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 14, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -188,7 +223,7 @@ list<Habitación> mapa1
 	Habitación
 	(16,
 	string("Holi, vas a morir 16"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 15, 3), Puerta(true, 17, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -196,7 +231,7 @@ list<Habitación> mapa1
 	Habitación
 	(17,
 	string("Holi, vas a morir 17"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -204,7 +239,7 @@ list<Habitación> mapa1
 	Habitación
 	(18,
 	string("Holi, vas a morir 18"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -212,7 +247,7 @@ list<Habitación> mapa1
 	Habitación
 	(19,
 	string("Holi, vas a morir 19"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -220,7 +255,7 @@ list<Habitación> mapa1
 	Habitación
 	(20,
 	string("Holi, vas a morir 20"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -228,7 +263,7 @@ list<Habitación> mapa1
 	Habitación
 	(21,
 	string("Holi, vas a morir 21"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -236,7 +271,7 @@ list<Habitación> mapa1
 	Habitación
 	(22,
 	string("Holi, vas a morir 22"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -244,7 +279,7 @@ list<Habitación> mapa1
 	Habitación
 	(23,
 	string("Holi, vas a morir 23"),
-	new list<Objeto*>{ new Weapon(1), new Weapon(1) },
+	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 	list<Enemy>{Enemy()},
 	vector<Llave>{}),
@@ -577,7 +612,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 						}
 					}
 
-					_llaves = hero.GetKey();
+					_llaves = hero.GetKeys();
 
 					for (puertasitr = puertas->begin(); puertasitr != puertas->end(); puertasitr++)
 					{
@@ -662,15 +697,15 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			{
 				foundTheNumber = true;
 				bool foundWeapon = false;
-				list <Objeto*> heroObjects = hero.GetObjects();
-				list <Objeto*>::iterator heroObjectsitr;
+				list <DLLObjetos*> heroObjects = hero.GetObjects();
+				list <DLLObjetos*>::iterator heroObjectsitr;
 				list <Weapon*> weaponlist;
 				list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
-				for (Objeto* objeto : heroObjects)
+				for (DLLObjetos* DLLObjetos : heroObjects)
 				{
-					if (objeto == dynamic_cast<Weapon*>(objeto))
+					if (DLLObjetos == dynamic_cast<Weapon*>(DLLObjetos))
 					{
-						weaponlist.insert(weaponlistitr, dynamic_cast<Weapon*>(objeto));
+						weaponlist.insert(weaponlistitr, dynamic_cast<Weapon*>(DLLObjetos));
 						if (weaponlistitr != weaponlist.end())
 						{
 							weaponlistitr++;
@@ -795,13 +830,13 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 				list<Habitación>::iterator mapa1itr;
 				list<Habitación>::iterator mapa1itr2;
 				list <Weapon*> weaponlist;
-				list <Objeto*> *Objetlist;
+				list <DLLObjetos*> *Objetlist;
 				for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
 				{
 					if (mapa1itr->GetNumH() == hero.GetCuartoActual())
 					{
 						weaponlist = mapa1itr->GetWeapons();
-						Objetlist = mapa1itr->GetObjetos();
+						Objetlist = mapa1itr->GetDLLObjetos();
 						mapa1itr2 = mapa1itr;
 					}
 				}
@@ -827,7 +862,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 
 						else
 						{
-							cout << "Tienes demasiados objetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
+							cout << "Tienes demasiados DLLObjetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
 						}
 
 					}
@@ -855,6 +890,146 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		}
 	}
 
+	found = key.find(" 14 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;		
+		ofstream save;
+		std::ofstream ofile("SaveFile.bin", std::ios::binary);		
+
+		//Habitacion
+		int num = 0;
+		bool playerEnters = false;
+		bool read = false;
+		string descripcion;
+		std::list <DLLObjetos*>* DLLObjetoslist;
+		std::list <DLLObjetos*>::iterator DLLObjetositr;
+		std::vector <Llave> llaves;
+		std::vector <Llave>::iterator llavesitr;
+		std::forward_list <Puerta> puertas;
+		std::forward_list <Puerta>::iterator puertasitr;
+		std::list <Enemy> enemigos;
+		std::list <Enemy>::iterator enemigositr;
+
+		list<Habitación>::iterator mapa1itr;
+		for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+		{
+			DLLObjetoslist = mapa1itr->GetDLLObjetos();
+			llaves = mapa1itr->GetLlaves();
+			puertas = mapa1itr->Getpuertas();
+			enemigos = mapa1itr->GetEnemies();
+
+			for (DLLObjetositr = DLLObjetoslist->begin(); DLLObjetositr != DLLObjetoslist->end(); DLLObjetositr++)
+			{
+				ofile.write((char*)&DLLObjetositr, sizeof(DLLObjetos*));
+			}
+
+			for (llavesitr = llaves.begin(); llavesitr != llaves.end(); llavesitr++)
+			{
+				ofile.write((char*)&llavesitr, sizeof(Llave));
+			}
+
+			for (puertasitr = puertas.begin(); puertasitr != puertas.end(); puertasitr++)
+			{
+				ofile.write((char*)&puertasitr, sizeof(Puerta));
+			}
+
+			for (enemigositr = enemigos.begin(); enemigositr != enemigos.end(); enemigositr++)
+			{
+				ofile.write((char*)&enemigositr, sizeof(Enemy));
+			}
+
+			num = mapa1itr->GetNumH();
+			ofile.write((char*)&num, sizeof(int));
+
+			playerEnters = mapa1itr->GetplayerEnters();
+			ofile.write((char*)&playerEnters, sizeof(bool));
+
+			read = mapa1itr->Getread();
+			ofile.write((char*)&read, sizeof(bool));
+
+			descripcion = mapa1itr->Getdescripcion();
+			ofile.write((char*)&descripcion, sizeof(string));
+		}
+
+		std::string name = hero.GetName();
+		int cuartoActual = hero.GetCuartoActual();		
+		int fuerzaCarga = hero.GetMaxCarga();
+		int cargaActual = hero.GetCarga();
+		float fuerza = hero.GetFuerza();
+		int currentMana = hero.GetMana();
+		int maxMana = hero.GetManaMax();
+		int exp = hero.GetExp();
+		int maxExp = hero.GetMaxExp();
+		int vida = hero.getVida();
+		int maxVida = hero.GetMaxVida();
+		Weapon currentweapon = hero.GetCurrentWeapon();
+		std::list <DLLObjetos *> DLLObjetosPlayer = hero.GetObjects();
+		std::vector <Llave> _llaves = hero.GetKeys();
+
+		ofile.write((char*)&name, sizeof(string));
+		ofile.write((char*)&cuartoActual, sizeof(int));
+		ofile.write((char*)&fuerzaCarga, sizeof(int));
+		ofile.write((char*)&cargaActual, sizeof(int));
+		ofile.write((char*)&fuerza, sizeof(float));
+		ofile.write((char*)&currentMana, sizeof(int));
+		ofile.write((char*)&maxMana, sizeof(int));
+		ofile.write((char*)&exp, sizeof(int));
+		ofile.write((char*)&maxExp, sizeof(int));
+		ofile.write((char*)&vida, sizeof(int));
+		ofile.write((char*)&maxVida, sizeof(int));
+		ofile.write((char*)&currentweapon, sizeof(Weapon));
+
+	}
+
+	found = key.find(" 15 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		ifstream savedFile;
+		savedFile.open("SaveFile.dat", std::ios::in);
+		if (!savedFile.fail()) 
+		{
+			
+		}
+	}
+
+	found = key.find(" 16 17 18 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		cout << "Atacar con hechizo" << '\n';
+		for (i = StringList.begin(); i != StringList.end(); i++)
+		{
+			if (i->find_first_of("0123456789") == 0)
+			{
+				list<Habitación>::iterator mapa1itr;
+				list<Enemy>* enemigosActuales = NULL;
+
+				for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+				{
+					if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+					{
+						enemigosActuales = (&(mapa1itr->GetEnemies()));
+					}
+				}
+
+				list<Enemy>::iterator enemigosActualesitr;
+				for (enemigosActualesitr = (*enemigosActuales).begin(); enemigosActualesitr != (*enemigosActuales).end(); enemigosActualesitr++)
+				{
+					if (enemigosActualesitr->Getid() == stoi(*i))
+					{
+						int finalhealth = enemigosActualesitr->GetVida() - hero.makeDamageWhitSpell();
+						enemigosActualesitr->SetVida(finalhealth);
+						if (enemigosActualesitr->GetVida() <= 0)
+						{
+							enemigosActualesitr->setAlive(false);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	if (!foundTheWord)
 	{
@@ -931,6 +1106,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Diccionario.insert(pair <int, string>(1, "caminar"));
 	Diccionario.insert(pair <int, string>(1, "transladarse"));
 	Diccionario.insert(pair <int, string>(1, "transladar"));
+	Diccionario.insert(pair <int, string>(1, "transladarme"));
+	Diccionario.insert(pair <int, string>(1, "pasar"));
+	Diccionario.insert(pair <int, string>(1, "pasarme"));
 
 	//Abrir
 	Diccionario.insert(pair <int, string>(2, "abrir"));
@@ -949,14 +1127,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Diccionario.insert(pair <int, string>(7, "mostrar"));
 	Diccionario.insert(pair <int, string>(7, "enseñar"));
 	Diccionario.insert(pair <int, string>(7, "inventario"));
-	Diccionario.insert(pair <int, string>(7, "objetos"));
+	Diccionario.insert(pair <int, string>(7, "DLLObjetos"));
 
 	//Tomar
 	Diccionario.insert(pair <int, string>(8, "tomar"));
 	Diccionario.insert(pair <int, string>(8, "agarrar"));
 	Diccionario.insert(pair <int, string>(8, "obtener"));
 	Diccionario.insert(pair <int, string>(9, "llave"));
-	Diccionario.insert(pair <int, string>(10, "objeto"));
+	Diccionario.insert(pair <int, string>(10, "DLLObjetos"));
 	Diccionario.insert(pair <int, string>(11, "espada"));
 	Diccionario.insert(pair <int, string>(11, "arma"));
 
@@ -966,8 +1144,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//curarse	
 
 	//Dropear
+	Diccionario.insert(pair <int, string>(13, "Dropear"));
+
+	//Guardar
+	Diccionario.insert(pair <int, string>(14, "guardar"));
+
+	//Cargar
+	Diccionario.insert(pair <int, string>(15, "cargar"));
+
 
 	//Hechizo
+	Diccionario.insert(pair <int, string>(16, "lanzar"));
+	Diccionario.insert(pair <int, string>(17, "hechizo"));
+	Diccionario.insert(pair <int, string>(18, "ofensivo"));
+	Diccionario.insert(pair <int, string>(18, "de ataque"));
+
 
 	//Experiencia
 
@@ -977,7 +1168,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	//Help
 
-	//Ver Inventario
+
+
 	//---------------------------------------------------------------------------
 
 		//---------------------------------------------------------------------------
@@ -997,7 +1189,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		1.- Cambiarse de Habitación
 		1.1.- Abrir la puerta
 		1.2.- Desbloquear la puerta (si está cerrada)
-		2.- Recoger Objetos
+		2.- Recoger DLLObjetos
 		2.1.- Recoger Escudo
 		2.2.- Recoger Espada
 		2.3.- Recoger Llave
@@ -1010,28 +1202,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		3.3.- Enemigo Boss
 		4.- Defensa automática
 		5.- Consultar su Inventario
-		6.- Tirar objetos
+		6.- Tirar DLLObjetos
 		7.- Información de la habitación
 		8.- Lootear enemigos
-		8.1.- Ver una lista de objetos que dropeó
-		8.2.- Tomar los objetos que quiera
+		8.1.- Ver una lista de DLLObjetos que dropeó
+		8.2.- Tomar los DLLObjetos que quiera
 		8.3.- Agregar una lista en la clase enemigo que almacene una
 		lista de strings, donde están especificados los elementos
 		que dropea para craftear
 		9.- Curarse (agregar el item de poti, la subclase, pues)
 		10.- Craftear pociones y alimentos para curarse
 		11.- Recetario de cosas que puede craftear, y qué necesita.
-		12.- Bestiario
 	Mecánicas:
 	-Spells
 	->Peso para cargar
 	-Crear Personaje
 	-Elegir mejoras
 	Narrativa:
-	-Sublime
-	-Fantasía
 	-Viaje al inframundo Egipcio
-	-24 hrs, día y noche, dividir las sesiones en tiempo
 	Enemigos:
 	-Sirvientes de APAP (Dios Griego del caos y el desánimo)
 	*/	
@@ -1171,292 +1359,945 @@ int GetCellNumberFromPoint(HWND hWnd, int x, int y)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-	case WM_CREATE: {
-		hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_SMALL));
-		hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_C8TICTACTOE));
-				
-		if (GetClientRect(hWnd, &rcClient))
-		{				
-			TextBox = CreateWindowA("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, (rcClient.right / 2) - 500, rcClient.bottom - 20, 1000, 20, hWnd, NULL, NULL, NULL);
-		}
-		Activar = CreateWindowA("BUTTON", "ACTIVAR", WS_VISIBLE | WS_CHILD | WS_BORDER, (rcClient.right / 2) + 510, rcClient.bottom - 20, 70, 20, hWnd, (HMENU)1, NULL, NULL);
-		//HWND hWndExample = CreateWindowA("STATIC", "Text Goes Here \nText is still here", WS_VISIBLE | WS_CHILD | SS_LEFT, 100, 100, 500, 200, hWnd, NULL, NULL, NULL);
-		//SetWindowText(hWndExample, TEXT("Control string"));
-		TEXTCOUT MAIN(hWnd, 100, 100, 1000, 500);
-		main = MAIN;
-		main.addText("HOLA");
-		main.addText("\nHOLA2");
-		main.addText("\nHOLA1");
-		main.addText("\nHOLA3");
-		main.addText("\nHOLA4");
-		main.addText("\nHOLA5");
-		main.addText("\nHOLA6");
-		main.addText("\nHOLA7");
-		main.addText("\nHOLA8");
-		main.addText("\nHOLA9");
-		main.addText("\nHOLA10");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-		main.addText("\nHOLA11");
-	}
-    case WM_COMMAND:
-        {			
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-			case 1:
-			{
-				int length = GetWindowTextLength(TextBox) + 1;
-				GetWindowTextA(TextBox, textReadead, length);
-
-				//-----------------------------Player----------------------------------
-				Player hero("name");
-				//------------------------------GAME-----------------------------------
-				list<Habitación>::iterator mapa1itr = mapa1.begin();
-				bool win = false;
-				bool combat = false;
-				string name, dummy;
-				//cout << "Pon el nombre de tu heroe: " << endl;
-				//cin >> name;
-				//getline(cin, dummy);
-				//cout << "Bienvenido " << name << endl;
-				mapa1itr->LeerHabitacion();
-
-				//string text;
-				if (win == false)
-				{
-					combat = CheckEnemy(mapa1, hero.GetCuartoActual());
-
-					if (combat == false && win == false)
-					{
-						//getline(std::cin, text);
-						try
-						{
-							DictionarySearch2(textReadead, Diccionario, hero, mapa1, false);
-						}
-						catch (std::exception& e)
-						{
-							//std::cout << "==========EXCEPTION: " << e.what() << '\n';
-						}
-
-						combat = CheckEnemy(mapa1, hero.GetCuartoActual());
-						//cout << "hero.GetCuartoActual(): " << hero.GetCuartoActual() << "\n";
-					}
-
-					else if(combat == true)
-					{
-						list<Enemy> enemigosActuales;
-						list<Enemy>::iterator enemigosActualesitr;
-						list<Habitación>::iterator mapa1itr;
-						for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
-						{
-							if (mapa1itr->GetNumH() == hero.GetCuartoActual())
-							{
-								enemigosActuales = mapa1itr->GetEnemies();
-							}
-						}
-
-						//getline(std::cin, text);
-						try
-						{
-							DictionarySearch2(textReadead, Diccionario, hero, mapa1, true);
-						}
-						catch (std::exception& e)
-						{
-							std::cout << "==========EXCEPTION: " << e.what() << '\n';
-						}
-
-						for (enemigosActualesitr = enemigosActuales.begin(); enemigosActualesitr != enemigosActuales.end(); enemigosActualesitr++)
-						{
-							if (enemigosActualesitr->isAlive())
-							{
-								hero.takeDamage(enemigosActualesitr->attack());
-							}
-							
-							string message = "El " + enemigosActualesitr->GetName() + "(Enemigo [" + to_string(enemigosActualesitr->Getid()) + "], HP[" + to_string(enemigosActualesitr->GetVida()) + "])" + " te ataco";
-							strcpy_s(coutMessage, message.c_str());
-
-							MessageBoxA(hWnd, coutMessage, textReadead, MB_OK);
-							cout << "Vida actual [" << hero.getVida() << "]" << endl;
-						}
-
-						combat = CheckEnemy(mapa1, hero.GetCuartoActual());
-					}
-				}
-
-				MessageBeep(MB_ICONASTERISK);
-				MessageBoxA(hWnd, textReadead, textReadead, MB_OK);
-				break;
-			}
-			case ID_Menu:
-			{
-				MessageBoxA(hWnd, "Estás Sure", "Really", MB_YESNO | MB_ICONQUESTION);
-				break;
-			}
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About); //Para crear cuadros de dialogo, usar otra funcion diferente a "About"
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-	case WM_LBUTTONDOWN: 
+	switch (message)
 	{
-		//int xPos = GET_X_LPARAM(lParam);
-		//int yPos = GET_Y_LPARAM(lParam);
-		//int index = GetCellNumberFromPoint(hWnd, xPos, yPos);
-		//HDC hdc = GetDC(hWnd);
-		//if (hdc)
+		case WM_CREATE: {
+
+			hbrWhite = (HBRUSH)GetStockObject(WHITE_BRUSH);
+			hbrGray = (HBRUSH)GetStockObject(GRAY_BRUSH);
+
+			hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_SMALL));
+			hIcon1 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_C8TICTACTOE));
+
+			if (GetClientRect(hWnd, &rcClient))
+			{
+				TextBox = CreateWindowA("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, (rcClient.right / 2) - 500, rcClient.bottom - 20, 1000, 20, hWnd, NULL, NULL, NULL);
+			}
+			Activar = CreateWindowA("BUTTON", "ACTIVAR", WS_VISIBLE | WS_CHILD | WS_BORDER, (rcClient.right / 2) + 510, rcClient.bottom - 20, 70, 20, hWnd, (HMENU)1, NULL, NULL);
+			//HWND hWndExample = CreateWindowA("STATIC", "Text Goes Here \nText is still here", WS_VISIBLE | WS_CHILD | SS_LEFT, 100, 100, 500, 200, hWnd, NULL, NULL, NULL);
+			//SetWindowText(hWndExample, TEXT("Control string"));
+			TEXTCOUT MAIN(hWnd, 100, 100, 1000, 500);
+			main = MAIN;
+			main.addText("HOLA");
+			main.addText("\nHOLA2");
+			main.addText("\nHOLA1");
+			main.addText("\nHOLA3");
+			main.addText("\nHOLA4");
+			main.addText("\nHOLA5");
+			main.addText("\nHOLA6");
+			main.addText("\nHOLA7");
+			main.addText("\nHOLA8");
+			main.addText("\nHOLA9");
+			main.addText("\nHOLA10");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			main.addText("\nHOLA11");
+			break;
+		}
+
+		case WM_COMMAND:
+		{			
+			int wmId = LOWORD(wParam);
+			// Parse the menu selections:
+			switch (wmId)
+			{
+				case 1:
+				{
+					int length = GetWindowTextLength(TextBox) + 1;
+					GetWindowTextA(TextBox, textReadead, length);
+
+					//-----------------------------Player----------------------------------
+					//------------------------------GAME-----------------------------------
+					list<Habitación>::iterator mapa1itr = mapa1.begin();
+					
+					string name, dummy;
+					//cout << "Pon el nombre de tu heroe: " << endl;
+					//cin >> name;
+					//getline(cin, dummy);
+					//cout << "Bienvenido " << name << endl;
+					mapa1itr->LeerHabitacion();
+
+					//string text;
+					if (win == false)
+					{
+						combat = CheckEnemy(mapa1, hero.GetCuartoActual());
+
+						if (combat == false && win == false)
+						{							
+							//getline(std::cin, text);
+							try
+							{
+								DictionarySearch2(textReadead, Diccionario, hero, mapa1, false);
+								//UpdateWindow(hWnd);
+								/*InvalidateRect(hWnd, NULL, TRUE);
+								RedrawWindow(hWnd, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ERASENOW | RDW_UPDATENOW);
+								UpdateWindow(hWnd);*/
+								RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_ERASENOW | RDW_FRAME | RDW_ERASE);
+								RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+							}
+							catch (std::exception& e)
+							{
+								//std::cout << "==========EXCEPTION: " << e.what() << '\n';
+							}
+
+							combat = CheckEnemy(mapa1, hero.GetCuartoActual());
+							//cout << "hero.GetCuartoActual(): " << hero.GetCuartoActual() << "\n";
+						}
+
+						else if (combat == true)
+						{
+							bool atack = true;
+							list<Enemy> enemigosActuales;
+							list<Enemy>::iterator enemigosActualesitr;
+							list<Habitación>::iterator mapa1itr;
+							for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+							{
+								if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+								{
+									enemigosActuales = mapa1itr->GetEnemies();
+								}
+							}
+
+							//getline(std::cin, text);
+							try
+							{
+								DictionarySearch2(textReadead, Diccionario, hero, mapa1, true);
+								//InvalidateRect(hWnd, NULL, TRUE);
+								RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_ERASENOW | RDW_FRAME | RDW_ERASE);
+								RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+								//UpdateWindow(hWnd);
+							}
+							catch (std::exception& e)
+							{
+								std::cout << "==========EXCEPTION: " << e.what() << '\n';
+							}
+
+							for (enemigosActualesitr = enemigosActuales.begin(); enemigosActualesitr != enemigosActuales.end(); enemigosActualesitr++)
+							{
+								if (enemigosActualesitr->isAlive())
+								{
+									atack = true;
+									hero.takeDamage(enemigosActualesitr->attack());
+								}
+								else
+								{
+									atack = false;
+								}
+
+								if (atack)
+								{
+									string message = "El " + enemigosActualesitr->GetName() + "(Enemigo [" + to_string(enemigosActualesitr->Getid()) + "], HP[" + to_string(enemigosActualesitr->GetVida()) + "])" + " te ataco";
+									strcpy_s(coutMessage, message.c_str());
+
+									MessageBoxA(hWnd, coutMessage, textReadead, MB_OK);
+								}
+								
+								cout << "Vida actual [" << hero.getVida() << "]" << endl;
+							}
+
+							combat = CheckEnemy(mapa1, hero.GetCuartoActual());
+							if (!combat)
+							{
+								srand(time(0));
+								int r = (rand() % 10) + 1;
+								if (r == 3)
+								{
+									hero.SetExp(hero.GetExp() + 30);
+								}
+								else if (r == 4)
+								{
+									hero.SetExp(hero.GetExp() + 40);
+								}
+								else if (r == 5)
+								{
+									hero.SetExp(hero.GetExp() + 50);
+								}
+								else if (r == 6)
+								{
+									hero.SetExp(hero.GetExp() + 60);
+								}
+								else
+								{
+									hero.SetExp(hero.GetExp() + 20);
+								}
+								
+							}
+						}
+					}
+
+					MessageBeep(MB_ICONASTERISK);
+					MessageBoxA(hWnd, textReadead, textReadead, MB_OK);
+					break;
+				}
+				case ID_Menu:
+				{
+					MessageBoxA(hWnd, "Estás Sure", "Really", MB_YESNO | MB_ICONQUESTION);
+					break;
+				}
+				case IDM_ABOUT:
+					DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About); //Para crear cuadros de dialogo, usar otra funcion diferente a "About"
+					break;
+				case IDM_EXIT:
+					DestroyWindow(hWnd);
+					break;
+				default:
+					return DefWindowProc(hWnd, message, wParam, lParam);
+			}
+		}
+	break;
+	
+		case WM_LBUTTONDOWN: 
+		{
+			//int xPos = GET_X_LPARAM(lParam);
+			//int yPos = GET_Y_LPARAM(lParam);
+			//int index = GetCellNumberFromPoint(hWnd, xPos, yPos);
+			//HDC hdc = GetDC(hWnd);
+			//if (hdc)
+			//{
+			//	//WCHAR temp[100];
+			//	//wsprintf(temp, L"Index = %d", index); // L"" la L convierte el char en WCHAR
+			//	//TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
+			//	////ReleaseDC(hWnd, hdc); // Sirve para liberar y dar muchos clicks
+			//	if (index != -1)
+			//	{
+			//		RECT rcCell;
+			//		if (GetCellRect(hWnd, index, &rcCell))
+			//		{
+			//			//DrawIcon(hdc, rcCell.left + (CELL_SIZE / 2) - 16, rcCell.top + (CELL_SIZE / 2) - 16, hIcon1);
+			//			//DrawIcon(hdc, rcCell.left + (CELL_SIZE / 2) - 16, rcCell.top + (CELL_SIZE / 2) - 16, hIcon2);
+			//			//FillRect(hdc, &rcCell, GetStockBrush(BLACK_BRUSH));
+			//		}
+			//	}
+			//}
+			break;
+		}
+
+		//case WM_SIZE:
 		//{
-		//	//WCHAR temp[100];
-		//	//wsprintf(temp, L"Index = %d", index); // L"" la L convierte el char en WCHAR
-		//	//TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
-		//	////ReleaseDC(hWnd, hdc); // Sirve para liberar y dar muchos clicks
-		//	if (index != -1)
-		//	{
-		//		RECT rcCell;
-		//		if (GetCellRect(hWnd, index, &rcCell))
-		//		{
-		//			//DrawIcon(hdc, rcCell.left + (CELL_SIZE / 2) - 16, rcCell.top + (CELL_SIZE / 2) - 16, hIcon1);
-		//			//DrawIcon(hdc, rcCell.left + (CELL_SIZE / 2) - 16, rcCell.top + (CELL_SIZE / 2) - 16, hIcon2);
-		//			//FillRect(hdc, &rcCell, GetStockBrush(BLACK_BRUSH));
-		//		}
-		//	}
+		//	scrollinfo.cbSize = sizeof(scrollinfo);
+		//	scrollinfo.fMask = SIF_RANGE | SIF_PAGE;
+		//	scrollinfo.nMin = 0;
+		//	scrollinfo.nMax = LINES - 1;
+		//	scrollinfo.nPage = yClient / yChar;
+		//	SetScrollInfo(main.GetWindow(), SB_VERT, &scrollinfo, TRUE);
+		//	break;
 		//}
-		//break;
-	}
-	case WM_GETMINMAXINFO:
-	{		
-		try
-		{
-			/*MINMAXINFO * pMinMax = (MINMAXINFO*)lParam;
-			pMinMax->ptMinTrackSize.x = 1200;
-			pMinMax->ptMinTrackSize.y = 300;
-			pMinMax->ptMaxTrackSize.x = 1600;
-			pMinMax->ptMaxTrackSize.y = 1280;*/
-		}
-		catch (std::exception &e)
-		{
 
-		}
-		
-	}
-
-	case WM_HSCROLL:
-	{
-		
-	}
-
-	case WM_VSCROLL:
-	{
-		main.scroll(0, -5);
-		//main.scroll(0, 5);
-	}
-
-    case WM_PAINT:
-        {
-		if (GetClientRect(hWnd, &rcClient))
-		{
-			MoveWindow(TextBox, (rcClient.right / 2) - 500, rcClient.bottom - 30, 1000, 20, true);
-			MoveWindow(Activar, (rcClient.right / 2) + 510, rcClient.bottom - 30, 70, 20, true);
-			main.Move((rcClient.right / 2) - 500, rcClient.top + 20, 1000, rcClient.bottom - 60);
-			//TEXTCOUT MAIN(hWnd, 100, 100, 1000, 500);
-		}
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-			RECT rc;
-			if (GetGameBoardRect(hWnd, &rc))
+		case WM_GETMINMAXINFO:
+		{		
+			try
 			{
-				RECT rcClient;
-				if (GetClientRect(hWnd, &rcClient))
-				{
-					//const WCHAR szText[] = L"Holi egergergergergerg";
-					//SetBkMode(hdc, TRANSPARENT); //no tiene el recuadro
-					//SetTextColor(hdc, RGB(30, 150, 250));
-					//TextOut(hdc, rcClient.right -500, 200, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
-					//TextBox = CreateWindowA("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, (rc.right / 2) - 50, rc.bottom - 20, (rc.right / 2) + 50, rc.bottom - 10, hWnd, NULL, NULL, NULL);
-				}
-				FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+
+			}
+			catch (std::exception &e)
+			{
+
+			}
+			break;
+		}
+	
+		case WM_HSCROLL:
+		{
+			break;
+		}
+
+		case WM_VSCROLL:
+		{		
+			//main.scroll(0, -5);
+			/*scrollinfo.cbSize = sizeof(scrollinfo);
+			scrollinfo.fMask = SIF_ALL;
+			GetScrollInfo(main.GetWindow(), SB_VERT, &scrollinfo);*/
+			//main.scroll(0, 5);
+			//switch (LOWORD(wParam))
+			//{
+			//case SB_LINEUP:
+			//	scrollinfo.nPos -= 1;
+			//	main.scroll(0, 5);
+			//	break;
+			//case SB_LINEDOWN:
+			//	scrollinfo.nPos += 1;
+			//	break;
+			//	// User dragged the scroll box.
+			//case SB_THUMBTRACK:
+			//	scrollinfo.nPos = scrollinfo.nTrackPos;
+			//	break;
+
+			//default:
+			//	break;
+			//}
+			break;
+		}
+
+		case WM_KEYUP:
+		{
+			switch (wParam)
+			{
+			case VK_UP:
+			{
+				up = false;
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				//main.scroll(0, -5);
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				break;
 			}
 
-			RECT mapaGraph;
-			for (int i = 0; i <= 7; i++)
+			case VK_DOWN:
 			{
-				mapaGraph.bottom = 0 + (40 * i);
-				for (int j = 0; j <= 7; j++)
+				down = false;
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				//main.scroll(0, 5);
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				//InvalidateRect(main.GetWindow(), NULL, TRUE);
+				break;
+			}
+
+			}
+			break;
+		}
+
+		case WM_KEYDOWN:
+		{
+			switch (wParam)
+			{
+			case VK_UP:
+			{
+				up = true;
+				main.scroll(0, -5);
+				break;
+			}
+
+			case VK_DOWN:
+			{
+				down = true;
+				main.scroll(0, 5);
+				break;
+			}
+			}
+			break;
+		}
+
+		case WM_ERASEBKGND:
+		{
+			//RedrawWindow(hWnd, NULL, NULL, RDW_ERASENOW);
+			if (combat)
+			{
+				RECT rc;
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hWnd, &ps);
+				GetClientRect(hWnd, &rc);
+				SetMapMode(hdc, MM_ANISOTROPIC);
+				SetWindowExtEx(hdc, 100, 100, NULL);
+				SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
+				FillRect(hdc, &rc, hbrWhite);
+
+				for (int i = -5; i < 100; i += 5)
 				{
-					mapaGraph.right = 0 + (40 * j);
+					for (int j = -5; j < 100; j += 5)
+					{
+						int x = j;
+						int y = i;
+						POINT vertices[] = { {x + 5, y - 10}, {x, y}, {x + 10, y} };
+
+						HBRUSH hBrush = CreateSolidBrush(RGB(10 + x * 2, 0, 0));
+						HBRUSH hOldBrush = SelectBrush(hdc, hBrush);
+
+						SetDCBrushColor(hdc, 0xd91fe5);
+						Polygon(hdc, vertices, sizeof(vertices) / sizeof(vertices[0]));
+
+						SelectBrush(hdc, hOldBrush);
+						DeleteObject(hBrush);
+					}
+				}
+				EndPaint(hWnd, &ps);
+			}
+			else
+			{
+				RECT rc;
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hWnd, &ps);
+				GetClientRect(hWnd, &rc);
+				SetMapMode(hdc, MM_ANISOTROPIC);
+				SetWindowExtEx(hdc, 100, 100, NULL);
+				SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
+				FillRect(hdc, &rc, hbrWhite);
+
+				for (int i = -5; i < 100; i += 5)
+				{
+					for (int j = -5; j < 100; j += 5)
+					{
+						int x = j;
+						int y = i;
+						POINT vertices[] = { {x + 5, y - 10}, {x, y}, {x + 10, y} };
+
+						HBRUSH hBrush = CreateSolidBrush(RGB(0, x + 50, y + 50));
+						HBRUSH hOldBrush = SelectBrush(hdc, hBrush);
+
+						SetDCBrushColor(hdc, 0xd91fe5);
+						Polygon(hdc, vertices, sizeof(vertices) / sizeof(vertices[0]));
+
+						SelectBrush(hdc, hOldBrush);
+						DeleteObject(hBrush);
+					}
+				}
+				EndPaint(hWnd, &ps);
+			}			
+		}
+
+		case WM_PAINT:
+			{
+			
+			//RedrawWindow(hWnd, NULL, NULL, RDW_UPDATENOW);
+
+			if (GetClientRect(hWnd, &rcClient))
+			{
+				MoveWindow(TextBox, (rcClient.right / 2) - 500, rcClient.bottom - 30, 1000, 20, true);
+				MoveWindow(Activar, (rcClient.right / 2) + 510, rcClient.bottom - 30, 70, 20, true);
+				main.Move((rcClient.right / 2) - 500, rcClient.top + 20, 1000, rcClient.bottom - 60);
+				//TEXTCOUT MAIN(hWnd, 100, 100, 1000, 500);
+			}
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hWnd, &ps);
+				RECT rc;
+
+				if (GetGameBoardRect(hWnd, &rc))
+				{
+					RECT rcClient;
+					if (GetClientRect(hWnd, &rcClient))
+					{
 					
 
-					mapaGraph.top = mapaGraph.bottom - 40;
-					mapaGraph.left = mapaGraph.right - 40;
 
-					FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(WHITE_BRUSH));
-					if (i == 7 && j == 3)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 6 && j == 2 || i == 6 && j == 3 || i == 6 && j == 4 || i == 6 && j == 5 || i == 6 && j == 6)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 5 && j == 2 || i == 5 && j == 4 || i == 5 && j == 6)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 4 && j == 1 || i == 4 && j == 2 || i == 4 && j == 4 || i == 4 && j == 6)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 3 && j == 4 || i == 3 && j == 6)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 2 && j == 4 || i == 2 && j == 5 || i == 2 && j == 6)
-					{
-						SetDCBrushColor(hdc, 0x00bb);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
-					}
-					if (i == 1 && j == 5)
-					{
-						SetDCBrushColor(hdc, 0xfaaf);
-						FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+						int numberH = 0;
+						RECT mapaGraph;
+						if (GetClientRect(hWnd, &mapaGraph))
+						{
+
+						}
+
+						
+						for (int i = 0; i <= 8; i++)
+						{
+							mapaGraph.bottom = 0 + (40 * i);
+							for (int j = 0; j <= 8; j++)
+							{
+								mapaGraph.right = 0 + (40 * j);
+
+
+								mapaGraph.top = mapaGraph.bottom - 40;
+								mapaGraph.left = mapaGraph.right - 40;
+
+								FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(WHITE_BRUSH));
+								if (i == 8 && j == 3)
+								{
+									numberH = 1;
+									SetDCBrushColor(hdc, 0x00bb);
+									FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+									if (hero.GetCuartoActual() == numberH)
+									{
+										SetDCBrushColor(hdc, 0xd91fe5);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+									}
+									const WCHAR szText[] = L"1";
+									SetTextColor(hdc, RGB(0, 0, 0));
+									SetBkMode(hdc, TRANSPARENT);
+									TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+									EndPath(hdc);
+									SelectClipPath(hdc, RGN_AND);
+									FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+								}
+
+								if (i == 7)
+								{
+									if (j == 2)
+									{
+										numberH = 3;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"3";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 3)
+									{
+
+										numberH = 2;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"2";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 4)
+									{
+										numberH = 4;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"4";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 5)
+									{
+										numberH = 7;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"7";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 10;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"10";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+								}
+
+								if (i == 6)
+								{
+
+									if (j == 2)
+									{
+										numberH = 5;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"5";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 4)
+									{
+										numberH = 6;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"6";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 13;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"13";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+								}
+
+								if (i == 5)
+								{
+									if (j == 1)
+									{
+										numberH = 11;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"11";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 2)
+									{
+										numberH = 8;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"8";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 4)
+									{
+										numberH = 9;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"9";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 14;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"14";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+								}
+
+								if (i == 4){if (j == 2){
+										numberH = 12;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"12";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+								}
+
+									if (j == 4)
+									{
+										numberH = 17;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"17";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 5)
+									{
+										numberH = 16;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"16";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 15;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"15";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+								}
+
+								if (i == 3)
+								{
+									if (j == 4)
+									{
+										numberH = 18;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"18";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 19;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}	
+										const WCHAR szText[] = L"19";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+								}
+
+								if (i == 2)
+								{
+									if (j == 4)
+									{
+										numberH = 20;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"20";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 5)
+									{
+										numberH = 22;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"22";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+
+									if (j == 6)
+									{
+										numberH = 21;
+										SetDCBrushColor(hdc, 0x00bb);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										if (hero.GetCuartoActual() == numberH)
+										{
+											SetDCBrushColor(hdc, 0xd91fe5);
+											FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+										}
+										const WCHAR szText[] = L"21";
+										SetTextColor(hdc, RGB(0, 0, 0));
+										SetBkMode(hdc, TRANSPARENT);
+										TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+										EndPath(hdc);
+										SelectClipPath(hdc, RGN_AND);
+										FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+									}
+								}
+
+
+								if (i == 1 && j == 5)
+								{
+									numberH = 23;
+									SetDCBrushColor(hdc, 0xfaaf);
+									FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+									if (hero.GetCuartoActual() == numberH)
+									{
+										SetDCBrushColor(hdc, 0xd91fe5);
+										FillRect(hdc, &mapaGraph, (HBRUSH)GetStockObject(DC_BRUSH));
+									}
+									const WCHAR szText[] = L"23";
+									SetTextColor(hdc, RGB(0, 0, 0));
+									SetBkMode(hdc, TRANSPARENT);
+									TextOut(hdc, mapaGraph.left + 15, mapaGraph.top + 15, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+									EndPath(hdc);
+									SelectClipPath(hdc, RGN_AND);
+									FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+								}
+							}
+						}
+
+						for (int i = 0; i < 9; i++)
+						{
+							DrawLine(hdc, (i * 40), 0, 0 + (i * 40), 40 * (8));
+							DrawLine(hdc, 0, (i * 40), 40 * (8), (i * 40));
+						}
+
+						//const WCHAR szText[] = L"1";
+						//SetTextColor(hdc, RGB(0, 0, 0));
+						//TextOut(hdc, 30, 30, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
+						////TextBox = CreateWindowA("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, (rc.right / 2) - 50, rc.bottom - 20, (rc.right / 2) + 50, rc.bottom - 10, hWnd, NULL, NULL, NULL);
+
+						//EndPath(hdc);
+
+						//// Derive a region from that path 
+						//SelectClipPath(hdc, RGN_AND);
+
+						//FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
+
 					}
 				}
+				// TODO: Add any drawing code that uses hdc here...
+				EndPaint(hWnd, &ps);
 			}
+			break;
 
-			for (int i = 0; i < 8; i++)
-			{
-				DrawLine(hdc, (i * 40), 0, 0 + (i * 40), 40 * (7));
-				DrawLine(hdc, 0, (i * 40), 40 * (7), (i * 40));
-			}
+		case WM_DESTROY:
+			DestroyIcon(hIcon1);
+			DestroyIcon(hIcon2);
+			PostQuitMessage(0);
+			break;
 
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-		DestroyIcon(hIcon1);
-		DestroyIcon(hIcon2);
-        PostQuitMessage(0);
-        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

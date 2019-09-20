@@ -907,6 +907,67 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		}
 	}
 
+	found = key.find(" 13 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		bool foundTheNumber = false;
+		cout << "dropear" << '\n';
+		for (i = StringList.begin(); i != StringList.end(); i++)
+		{
+			if (i->find_first_of("0123456789") == 0)
+			{
+				foundTheNumber = true;
+				list<Habitación>::iterator mapa1itr;
+				list<Habitación>::iterator mapa1itr2;
+				list <Weapon*> weaponlist;
+				list <DLLObjetos*> *Objetlist;
+				for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+				{
+					if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+					{
+						weaponlist = mapa1itr->GetWeapons();
+						Objetlist = mapa1itr->GetDLLObjetos();
+						mapa1itr2 = mapa1itr;
+					}
+				}
+
+				list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
+				int weaponN = 0;
+				for (weaponlistitr = weaponlist.begin(); weaponlistitr != weaponlist.end(); weaponlistitr++)
+				{
+					if (weaponN == stoi(*i))
+					{
+						if (hero.SetCargactual(-(*weaponlistitr)->GetPeso()))
+						{
+							hero.drop(*weaponlistitr);
+							try
+							{
+								mapa1itr2->Add(*weaponlistitr);
+							}
+							catch (std::exception e)
+							{
+								std::cout << " a standard exception was caught, with message '" << e.what() << "\n";
+							}
+							main.addText("Dropeaste el arma, perdiste de peso: " + std::to_string((*weaponlistitr)->GetPeso()) + '\n');
+						}
+
+						else
+						{
+							cout << "Tienes demasiados objetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
+							
+						}
+
+					}
+					weaponN++;
+				}
+
+
+
+			}
+		}
+	}
+
 	found = key.find(" 14 ");
 	if (found != string::npos)
 	{
@@ -1049,6 +1110,73 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		}
 	}
 
+	found = key.find(" 19 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		bool foundTheNumber = false;
+
+			main.addText("Los comandos que se pueden usar en el juego son los siguientes: \n");
+
+			main.addText("Para moverte puedes usar las siguientes palabras: \n");
+			main.addText("Cambiar \n");
+			main.addText("Cambiarme \n");
+			main.addText("Mover \n");
+			main.addText("Moverme \n");
+			main.addText("ir \n");
+			main.addText("caminar \n");
+			main.addText("trasladarse \n");
+			main.addText("trasladar \n");
+			main.addText("trasladarme \n");
+			main.addText("pasar \n");
+			main.addText("pasarme \n");
+
+			main.addText("la palabra con la que puedes abrir cosas es: \n");
+			main.addText("abrir \n");
+
+			main.addText("Los objetos que puedes abrir son los siguientes: \n");
+			main.addText("puerta \n");
+			main.addText("cofre \n");
+
+			main.addText("Las palabras aceptables para atacar a un enemigo son las siguientes: \n");
+			main.addText("atacar \n");
+			main.addText("matar \n");
+			main.addText("pegarle \n");
+
+			main.addText("para equipar armas tienes que usar la siguiente palablra \n");
+			main.addText("equipar \n");
+
+			main.addText("para mostrar el inventario puedes usar las siguientes palabras: \n");
+			main.addText("mostrar \n");
+			main.addText("enseñar \n");
+			main.addText("inventario \n");
+
+			main.addText("Pra recoger objetos puedes usar las siguientes palabras \n");
+			main.addText("tomar \n");
+			main.addText("agarrar \n");
+			main.addText("obtener \n");
+
+			main.addText("Los objetos que puedes recoger son los siguientes: \n");
+			main.addText("llave \n");
+			main.addText("espada \n");
+			main.addText("arma \n");
+
+			main.addText("si quieres volver a ver la descripcion del cuarto ingresa la siguiente palabra: \n");
+			main.addText("leer \n");
+
+			main.addText("Si quieres soltar un objeto ingresa la siguiente palabra: \n");
+			main.addText("dropear \n");
+
+			main.addText("para lanzar un hechizo tienes que ingresar las siguientes palabras: \n");
+			main.addText("lanzar \n");
+			main.addText("hechizo \n");
+
+			main.addText("para el tipo de hechizo puedes ingresar las siguientes palabras \n");
+			main.addText("ofensivo \n");
+			main.addText("de ataque \n");
+	}
+
+
 	if (!foundTheWord)
 	{
 		cout << "No se encontro el comando, intenta de nuevo o ingresa Help para ver mas opciones" << '\n';
@@ -1160,10 +1288,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//Mapa
 	Diccionario.insert(pair <int, string>(12, "leer"));
 
-	//curarse	
-
 	//Dropear
-	Diccionario.insert(pair <int, string>(13, "Dropear"));
+	Diccionario.insert(pair <int, string>(13, "dropear"));
+	Diccionario.insert(pair <int, string>(13, "tirar"));
 
 	//Hechizo
 	Diccionario.insert(pair <int, string>(16, "lanzar"));
@@ -1171,15 +1298,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Diccionario.insert(pair <int, string>(18, "ofensivo"));
 	Diccionario.insert(pair <int, string>(18, "de ataque"));
 
-
-	//Experiencia
-
-	//Vida
-
-	//Stats
-
 	//Help
-
+	Diccionario.insert(pair <int, string>(19, "ayuda"));
+	Diccionario.insert(pair <int, string>(19, "help"));
 
 
 	//---------------------------------------------------------------------------
@@ -1550,6 +1671,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							combat = CheckEnemy(mapa1, hero.GetCuartoActual());
 							if (!combat)
 							{
+								hero.setVida(hero.GetMaxVida());
 								srand(time(0));
 								int r = (rand() % 10) + 1;
 								if (r == 3)

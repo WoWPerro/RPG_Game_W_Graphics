@@ -35,7 +35,7 @@ public:
 	void move(int cuarto);
 	void SetCuartoActual(int cuarto);
 	int GetCuartoActual();
-	void drop(DLLObjetos *);
+	void drop(DLLObjetos* obj);
 	void take(DLLObjetos *);
 	void takeKey(Llave Llave);
 	vector <Llave> GetKeys();

@@ -28,8 +28,9 @@ void Player::move(int cuarto)
 	SetCuartoActual(cuarto);
 }
 
-void Player::drop(DLLObjetos *)
+void Player::drop(DLLObjetos* obj)
 {
+	_DLLObjetos.remove(obj);
 
 }
 

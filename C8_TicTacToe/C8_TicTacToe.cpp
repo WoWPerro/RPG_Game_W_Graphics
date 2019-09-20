@@ -73,6 +73,7 @@ Player hero("name");
 bool win = false;
 bool combat = false;
 bool dead = false;
+bool start = false;
 //int LINES = 28;
 
 //-----------------------------For the Scroll------------------------------------
@@ -103,7 +104,7 @@ list<Habitación> mapa1
 {
 	Habitación
 	(1,
-	string("Holi, vas a morir 1"),
+	string(""),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(false, 2, 0)},
 	list<Enemy>{},
@@ -111,15 +112,15 @@ list<Habitación> mapa1
 
 	Habitación
 	(2,
-	string("Holi, vas a morir 2"),
+	string("Ves una habitacion siniestra"),
 	new list<DLLObjetos*>{new Weapon(3), new Weapon(1)},
-	forward_list<Puerta>{Puerta(true, 1, 0), Puerta(true, 3, 1), Puerta(true, 4, 2)},
+	forward_list<Puerta>{Puerta(true, 1, 0), Puerta(true, 3, 1), Puerta(false, 4, 2)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
 	(3,
-	string("Holi, vas a morir 3"),
+	string("Cuidado adelante, te tiemblan las manos"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 2, 1), Puerta(true, 5, 3)},
 	list<Enemy>{Enemy(1,1)},
@@ -127,15 +128,15 @@ list<Habitación> mapa1
 
 	Habitación
 	(4,
-	string("Holi, vas a morir 4"),
+	string("escuchas una voz decir (Vaya, llegaste hasta aqui)"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(2)},
 	forward_list<Puerta>{Puerta(true, 2, 2), Puerta(true, 6, 2), Puerta(true, 7, 2)},
-	list<Enemy>{Enemy(2,1)},
+	list<Enemy>{Enemy(2,1),Enemy(2,1),Enemy(2,1)},
 	vector<Llave>{}),
 
 	Habitación
 	(5,
-	string("Holi, vas a morir 5"),
+	string("Sonidos tenebrosos.mp3"),
 	new list<DLLObjetos*>{new Weapon(3), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 3, 3), Puerta(true, 8, 3)},
 	list<Enemy>{Enemy(2,1), Enemy(1,2)},
@@ -143,7 +144,7 @@ list<Habitación> mapa1
 
 	Habitación
 	(6,
-	string("Holi, vas a morir 6"),
+	string("Todo esta en ruinas"),
 	new list<DLLObjetos*>{new Weapon(2), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 9, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
@@ -151,7 +152,7 @@ list<Habitación> mapa1
 
 	Habitación
 	(7,
-	string("Holi, vas a morir 7"),
+	string("recuerdas que estas solo"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 10, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
@@ -159,22 +160,22 @@ list<Habitación> mapa1
 
 	Habitación
 	(8,
-	string("Holi, vas a morir 8"),
+	string("Cuidado si mueres"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
-	forward_list<Puerta>{Puerta(true, 5, 3), Puerta(true, 11, 3), Puerta(true, 12, 3)},
+	forward_list<Puerta>{Puerta(true, 5, 3), Puerta(true, 11, 3), Puerta(false, 12, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 Habitación
 	(9,
-	string("Holi, vas a morir 9"),
+	string("Ves varios esqueletos tirados, y tratas de no pisarlos"),
 	new list<DLLObjetos*>{new Weapon(3), new Weapon(3)},
-	forward_list<Puerta>{Puerta(true, 6, 3), Puerta(true, 17, 3)},
+	forward_list<Puerta>{Puerta(true, 6, 3), Puerta(false, 17, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
 	vector<Llave>{}),
 
 	Habitación
 	(10,
-	string("Holi, vas a morir 10"),
+	string("Parece que las paredes están cubiertas de oro"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 7, 3), Puerta(true, 13, 3)},
 	list<Enemy>{Enemy(2,1), Enemy(1,2)},
@@ -182,23 +183,23 @@ Habitación
 
 	Habitación
 	(11,
-	string("Holi, vas a morir 11"),
+	string("..."),
 	new list<DLLObjetos*>{new Weapon(2), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
-	vector<Llave>{}),
+	vector<Llave>{Llave(12)}),
 
 	Habitación
 	(12,
-	string("Holi, vas a morir 12"),
+	string("Escuchas rugidos a lo lejos"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 8, 3)},
 	list<Enemy>{Enemy(1,1), Enemy(1,2)},
-	vector<Llave>{}),
+	vector<Llave>{Llave(4)}),
 
 	Habitación
 	(13,
-	string("Holi, vas a morir 13"),
+	string("........"),
 	new list<DLLObjetos*>{new Weapon(1), new Weapon(1)},
 	forward_list<Puerta>{Puerta(true, 10, 3), Puerta(true, 14, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
@@ -206,81 +207,81 @@ Habitación
 
 	Habitación
 	(14,
-	string("Holi, vas a morir 14"),
+	string("esta muy oscuro"),
 	new list<DLLObjetos*>{new Weapon(3), new Weapon(2)},
-	forward_list<Puerta>{Puerta(true, 13, 3)},
+	forward_list<Puerta>{Puerta(true, 13, 3), Puerta(true, 15, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(15,
-	string("Holi, vas a morir 15"),
+	string("Hay una antorcha a la mitad de la habitacion"),
 	new list<DLLObjetos*>{new Weapon(2), new Weapon(2)},
-	forward_list<Puerta>{Puerta(true, 14, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 14, 3), Puerta(false, 19, 3), Puerta(false, 16, 3)},
 	list<Enemy>{Enemy(2, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(16,
-	string("Holi, vas a morir 16"),
+	string("Que pasa? escuchas a lo lejos"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 15, 3), Puerta(true, 17, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
-	vector<Llave>{}),
+	vector<Llave>{Llave(19)}),
 Habitación
 	(17,
-	string("Holi, vas a morir 17"),
+	string("Axilio Escuchas a lo lejos"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3), Puerta(false, 18, 3)},
 	list<Enemy>{Enemy(2, 1), Enemy(2, 2)},
-	vector<Llave>{}),
+	vector<Llave>{Llave(16)}),
 
 	Habitación
 	(18,
-	string("Holi, vas a morir 18"),
+	string("Todo esta muy callado"),
 	new list<DLLObjetos*>{ new Weapon(3), new Weapon(2) },
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 20, 3), Puerta(true, 17, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(19,
-	string("Holi, vas a morir 19"),
+	string("..."),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 15, 3), Puerta(true, 21, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(2, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(20,
-	string("Holi, vas a morir 20"),
+	string("Recuerdas que estas solo"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 28, 3), Puerta(true, 22, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(1, 2), Enemy(1, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(21,
-	string("Holi, vas a morir 21"),
+	string("Huye!"),
 	new list<DLLObjetos*>{ new Weapon(2), new Weapon(3) },
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
+	forward_list<Puerta>{Puerta(true, 19, 3)},
 	list<Enemy>{Enemy(1, 1), Enemy(2, 2)},
-	vector<Llave>{}),
+	vector<Llave>{Llave(18)}),
 
 	Habitación
 	(22,
-	string("Holi, vas a morir 22"),
+	string("..."),
 	new list<DLLObjetos*>{ new Weapon(4)},
-	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy(2, 1), Enemy(2, 2)},
+	forward_list<Puerta>{Puerta(true, 20, 3), Puerta(true, 23, 3)},
+	list<Enemy>{Enemy(2, 1), Enemy(2, 2), Enemy(2, 2), Enemy(2, 2), Enemy(3, 2)},
 	vector<Llave>{}),
 
 	Habitación
 	(23,
-	string("Holi, vas a morir 23"),
+	string("Las paredes comienzan a brillar extrañamente"),
 	new list<DLLObjetos*>{ new Weapon(1), new Weapon(1) },
 	forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
-	list<Enemy>{Enemy(3, 1)},
+	list<Enemy>{},
 	vector<Llave>{}),
 };
 
@@ -342,7 +343,7 @@ void searchMinorDoor(list<Habitación> mapa1, Habitación H, int n, Player &hero)
 				{
 					if (mapa1itr->GetNumH() == n)
 					{
-						mapa1itr->LeerHabitacion();
+						mapa1itr->LeerHabitacion(main);
 					}
 				}
 			}
@@ -371,7 +372,7 @@ void searchMinorDoor(list<Habitación> mapa1, Habitación H, int n, Player &hero)
 				{
 					if (mapa1itr->GetNumH() == n)
 					{
-						mapa1itr->LeerHabitacion();
+						mapa1itr->LeerHabitacion(main);
 					}
 				}
 			}
@@ -398,7 +399,7 @@ void searchMinorDoor(list<Habitación> mapa1, Habitación H, int n, Player &hero)
 		else
 		{
 			cout << "El camino está cerrado, no puedes pasar, hay una puerta bloqueada en la habitación: " << H.GetNumH() << endl;
-			main.addText("El camino está cerrado, no puedes pasar, hay una puerta bloqueada en la habitación: " + H.GetNumH() + '\n');
+			main.addText("El camino está cerrado, no puedes pasar, hay una puerta bloqueada en la habitación: " + std::to_string(H.GetNumH()) + '\n');
 		}
 	}
 
@@ -481,7 +482,7 @@ void nextRoom(list<Habitación> &mapa1, int n, Player &hero)
 			{
 				if (mapa1itr->GetNumH() == n)
 				{
-					mapa1itr->LeerHabitacion();
+					mapa1itr->LeerHabitacion(main);
 				}
 			}
 		}
@@ -497,12 +498,15 @@ void nextRoom(list<Habitación> &mapa1, int n, Player &hero)
 		if (n == hero.GetCuartoActual())
 		{
 			cout << "Estas en a habitacion " << n << endl;
+			main.addText("Estas en a habitacion " + std::to_string(n) + '\n');
 		}
 		else if (n > maxH) {
-			cout << "La habitacion " << n << " no existe" << endl;
+			cout << "La habitacion " << n << " no existe\n" << endl;
+			main.addText("la habitacion no existe ingresaste el num " + std::to_string(n) + '\n');
 		}
 		else {
 			cout << "La habitacion " << n << " esta muy lejos para que llegues a ella" << endl;
+			main.addText("la habitacion esta muy lejos para que llegues \n");
 		}
 
 	}
@@ -574,11 +578,13 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			if (!foundNumber)
 			{
 				cout << "Por favor especifique un numero de habitacion con numero [ej(1) no(uno)]" << endl;
+				main.addText("Por favor especifique un numero de habitacion con numero [ej(1) no(uno)]\n");
 			}
 		}
 		else
 		{
 			cout << "No puedes cambiar de cuarto durante una batalla" << endl;
+			main.addText("No puedes cambiar de cuarto durante una batalla\n");
 		}
 	}
 
@@ -589,6 +595,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		if (!battle)
 		{
 			cout << "Abriendo puerta" << '\n';
+			main.addText("Intentando abrir puerta\n");
 			bool foundNumber = false;
 			list<Habitación>::iterator mapa1itr;
 			std::forward_list <Puerta> *puertas = NULL;
@@ -636,14 +643,17 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			if (!foundNumber)
 			{
 				cout << "Por favor especifique un numero de habitacion con numero [ej(1) no(uno)]" << endl;
+				main.addText("Por favor especifique un numero de habitacion con numero [ej(1) no(uno)]\n");
 			}
 			if (!foundoor && foundNumber)
 			{
 				cout << "No esta la puerta que te lleva al cuarto que especificaste" << endl;
+				main.addText("No esta la puerta que te lleva al cuarto que especificaste\n");
 			}
 			if (foundoor && !truekey)
 			{
 				cout << "No tienes la llave en tu inventario, buscala en el mapa" << endl;
+				main.addText("No tienes la llave en tu inventario, buscala en el mapa\n");
 			}
 		}
 
@@ -720,13 +730,15 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 								hero.SetWeapon(**weaponlistitr);
 								foundWeapon = true;
 								cout << "Equipaste el arma: " << endl;
-								(**weaponlistitr).showStats();
+								main.addText("Equipaste el arma: \n");
+								(**weaponlistitr).showStats(main);
 							}
 							weaponN++;
 						}
 						if (!foundWeapon)
 						{
 							cout << "No encontre tu arma numero [" << *i << "] En tu inventario, puedes desplegar el inventario para averiguar qué tienes" << endl;
+							main.addText("No encontre tu arma en tu inventario, porque no despliegas tu inventario para ver que tienes");
 						}
 					}
 				}
@@ -735,6 +747,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		if (!foundTheNumber)
 		{
 			cout << "Por favor especifica un numero Ej. (Equipar 5)" << endl;
+			main.addText("Por favor especifica un numero Ej. (Equipar 5)\n");
 		}
 	}
 
@@ -743,7 +756,8 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 	{
 		foundTheWord = true;
 		cout << "Mostrando inventario" << '\n';
-		hero.showInventory();
+		main.addText("Mostrando inventario \n");
+		hero.showInventory(main);
 	}
 
 	found = key.find(" 8 9 ");
@@ -799,6 +813,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		if (!foundTheNumber)
 		{
 			cout << "Por favor especifica un numero Ej. (Equipar 5)" << endl;
+			main.addText("Por favor especifica un numero Ej. (Equipar 5) \n");
 		}
 	}
 
@@ -863,7 +878,8 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 
 						else
 						{
-							cout << "Tienes demasiados DLLObjetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
+							cout << "Tienes demasiados objetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
+							main.addText("Tienes demasiados objetos, tira alguno si quieres obtener este, su peso es [" + std::to_string((*weaponlistitr)->GetPeso()) + '\n');
 						}
 
 					}
@@ -886,7 +902,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			if (mapa1itr->GetNumH() == hero.GetCuartoActual())
 			{
 				mapa1itr->setRead(false);
-				mapa1itr->LeerHabitacion();
+				mapa1itr->LeerHabitacion(main);
 			}
 		}
 	}
@@ -1000,6 +1016,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 	{
 		foundTheWord = true;
 		cout << "Atacar con hechizo" << '\n';
+		main.addText("Atacando con hechizo \n");
 		for (i = StringList.begin(); i != StringList.end(); i++)
 		{
 			if (i->find_first_of("0123456789") == 0)
@@ -1020,7 +1037,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 				{
 					if (enemigosActualesitr->Getid() == stoi(*i))
 					{
-						int finalhealth = enemigosActualesitr->GetVida() - hero.makeDamageWhitSpell();
+						int finalhealth = enemigosActualesitr->GetVida() - hero.makeDamageWhitSpell(main);
 						enemigosActualesitr->SetVida(finalhealth);
 						if (enemigosActualesitr->GetVida() <= 0)
 						{
@@ -1035,6 +1052,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 	if (!foundTheWord)
 	{
 		cout << "No se encontro el comando, intenta de nuevo o ingresa Help para ver mas opciones" << '\n';
+		main.addText("No se encontro el comando, intenta de nuevo o ingresa Help para ver mas opciones \n");
 	}
 }
 
@@ -1371,9 +1389,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			Activar = CreateWindowA("BUTTON", "ACTIVAR", WS_VISIBLE | WS_CHILD | WS_BORDER, (rcClient.right / 2) + 510, rcClient.bottom - 20, 70, 20, hWnd, (HMENU)1, NULL, NULL);
 			//HWND hWndExample = CreateWindowA("STATIC", "Text Goes Here \nText is still here", WS_VISIBLE | WS_CHILD | SS_LEFT, 100, 100, 500, 200, hWnd, NULL, NULL, NULL);
 			//SetWindowText(hWndExample, TEXT("Control string"));
-			TEXTCOUT2 MAIN("HOLA01\n");
+			TEXTCOUT2 MAIN("Bienvenido\n");
 			main = MAIN;
-			main.addText("HOLA2\n");
+			main.addText("Este juego se juega escribiendo lo que quieres hacer\n");
+			main.addText("El mapa se encuentra en la parte superior izquierda\n");
+			main.addText("Si quieres hacer Scroll al texto para ver tu progreso, puedes apretar las flechas Arriba o Abajo\n");
+			main.addText("Ten mucho cuidado cuando estés en combate, la GUI va a cambiar para indicarte que estas en peligro\n");
+			main.addText("Cuidado con lo que escribes cuando estes en combate, si te equivocas los enemigos se aprovecharan de ello!\n");
+			main.addText("No dudes en Buscar Ayuda en las opciones\n");
+			main.addText("Cualquier fallo o bug Favor de Reportarlo al correo [carlo.relion@saei.mx]\n");
+			main.addText("Ahora sin mas que decir\n");
+			main.addText("A disfrutar ¡La maldicion de APAP!\n");
+			main.addText("Te despiertas, no entiendes que pasa\n");
+			main.addText("Que habra pasado?\n");
+			main.addText("a tu alrededor ves dos armas y una llave tirada en el piso\n");
+			main.addText("todo esta sospechosamente impecable\n");
+			main.addText("habias escuchado las historias\n");
+			main.addText("pero no creias que fueran ciertas\n");
+			main.addText("(no creo que haya pasado) piensas\n");
+			main.addText("(no puede ser!)\n");
+			main.addText("te levantas, te sientes muy ligero\n");
+			main.addText("tratas de recordar lo que hiciste ayer pero no puedes\n");
+			main.addText("vislumbras una puerta delante de ti, la intentas abrir pero esta cerrada con llave\n");
+			main.addText("te asustas, crees que no vas a poder salir\n");
+			main.addText("Que raro\n");
+			main.addText("Me siento demasiado extrano\n");
+			main.addText("en las paredes observas siimbolos, ya los habias visto antes\n");
+			main.addText("(Scrollea hacia abajo) =============================\n");
+			main.addText("te acercas para ver que dicen\n");
+			main.addText("Alcanzas a leer: Aqui yacen todos aquellos que son puestos a prueba\n");
+			main.addText("Despues de un momento decides hacer algo:\n");
 			break;
 		}
 
@@ -1385,6 +1430,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				case 1:
 				{
+					if (start)
+					{
+						main.SetIndex(main.size() - 25);
+					}
+					start = true;
 					int length = GetWindowTextLength(TextBox) + 1;
 					GetWindowTextA(TextBox, textReadead, length);
 
@@ -1397,7 +1447,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					//cin >> name;
 					//getline(cin, dummy);
 					//cout << "Bienvenido " << name << endl;
-					mapa1itr->LeerHabitacion();
+					mapa1itr->LeerHabitacion(main);
 
 					//string text;
 					if (win == false)
@@ -1413,6 +1463,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 								if (hero.GetCuartoActual() == 23)
 								{
 									cout << "GANASTE" << endl;
+									main.addText("Lo logre! eh ganado la inmortalidad \n");
+									main.addText("Podre al fin vivir con los faraones \n");
+									main.addText("Podre al fin descansar \n");
+									main.addText("En eso te empiezas a desvancer \n");
+									main.addText("Lo logré te repites \n");
+									main.addText("lo...lo....gre.... \n");
+									main.addText("... \n");
+									main.addText("... \n");
+									main.addText("... \n");
+									main.addText("... \n");
+									main.addText("========================================FIN===============================================");
 								}
 								//UpdateWindow(hWnd);
 								/*InvalidateRect(hWnd, NULL, TRUE);
@@ -1476,6 +1537,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 								if (atack)
 								{
+									main.addText("Te Atacaron, tu vida es = " + std::to_string(hero.getVida()) + '\n');
 									string message = "El " + enemigosActualesitr->GetName() + "(Enemigo [" + to_string(enemigosActualesitr->Getid()) + "], HP[" + to_string(enemigosActualesitr->GetVida()) + "])" + " te ataco tu vida es [" + to_string(hero.getVida()) + "]";
 									strcpy_s(coutMessage, message.c_str());
 
@@ -1510,7 +1572,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 								{
 									hero.SetExp(hero.GetExp() + 20);
 								}
-								
+								main.addText("Ganaste el Combate! tu exp = " + hero.GetExp() + '\n');
 							}
 						}
 					}
@@ -1520,8 +1582,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					}
 
 
-					MessageBeep(MB_ICONASTERISK);
-					MessageBoxA(hWnd, textReadead, textReadead, MB_OK);
+					//MessageBeep(MB_ICONASTERISK);
+					MessageBoxA(hWnd, textReadead, "Input", NULL);
 					break;
 				}
 				case ID_Menu:
@@ -1659,14 +1721,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				up = true;
 				//main.scroll(0, -5);
-				main.SetIndex(main.GetIndex() + 1);
+				main.SetIndex(main.GetIndex() - 1);
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_ERASENOW | RDW_FRAME | RDW_ERASE);
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 				break;
 			}
 
 			case VK_DOWN:
 			{
 				down = true;
-				main.SetIndex(main.GetIndex() - 1);
+				main.SetIndex(main.GetIndex() + 1);
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_ERASENOW | RDW_FRAME | RDW_ERASE);
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 				break;
 			}
 			}
@@ -1762,7 +1828,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					if (GetClientRect(hWnd, &rcClient))
 					{
 					
-						main.addText("sdsdsds");
+						//main.addText("sdsdsds");
 						main.display(hdc, rc);
 
 
@@ -1773,12 +1839,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 						}
 
-						
-						TEXTCOUT2 d("Holis");
-						d.addText("Holis");
-						d.display(hdc, rc);
-
-
+						//main.display(hdc, rc);
 
 						for (int i = 0; i <= 8; i++)
 						{
@@ -2256,18 +2317,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							DrawLine(hdc, (i * 40), 0, 0 + (i * 40), 40 * (8));
 							DrawLine(hdc, 0, (i * 40), 40 * (8), (i * 40));
 						}
+						
+						RECT Background;
+						Background.left = rcClient.left + 480;
+						Background.top = rcClient.top + 20;
+						Background.right = 1300;
+						Background.bottom = 650;
+						FillRect(hdc, &Background, (HBRUSH)GetStockObject(WHITE_BRUSH));
+						main.display(hdc, rc);
+						EndPath(hdc);
 
-						//const WCHAR szText[] = L"1";
-						//SetTextColor(hdc, RGB(0, 0, 0));
-						//TextOut(hdc, 30, 30, szText, ARRAYSIZE(szText)); //Imprime cosas en la pantalla			
-						////TextBox = CreateWindowA("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, (rc.right / 2) - 50, rc.bottom - 20, (rc.right / 2) + 50, rc.bottom - 10, hWnd, NULL, NULL, NULL);
+						// Derive a region from that path 
 
-						//EndPath(hdc);
-
-						//// Derive a region from that path 
-						//SelectClipPath(hdc, RGN_AND);
-
-						//FillRect(hdc, &rc, (HBRUSH)GetStockObject(GRAY_BRUSH));
 
 					}
 				}

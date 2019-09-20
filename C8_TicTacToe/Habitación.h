@@ -4,6 +4,7 @@
 #include "Puerta.h"
 #include "Llave.h"
 #include "Weapon.h"
+#include "TEXTCOUT2.h"
 
 #include <iostream>
 #include <string>
@@ -20,6 +21,7 @@ using std::vector;
 class Habitación
 {
 private:
+	//TEXTCOUT2 *_main;
 	int num = 0;
 	bool _playerEnters = false;
 	bool _read = false;
@@ -41,7 +43,7 @@ public:
 	@param NULL
 	@return string con todos los DLLObjetos dentro de la habitación
 	*/
-	void LeerHabitacion();
+	void LeerHabitacion(TEXTCOUT2 &main);
 	void SetDescription(std::string descripcion);
 	void setRead(bool read);
 	int GetNumH();
@@ -61,6 +63,7 @@ public:
 	bool GetplayerEnters();
 	bool Getread();
 	string Getdescripcion();
+	void SetTEXTCOUT(TEXTCOUT2 &main);
 	~Habitación();
 };
 

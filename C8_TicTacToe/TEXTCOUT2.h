@@ -15,6 +15,7 @@ public:
 	void Move(int x, int y, int w, int h);
 	int GetIndex();
 	void SetIndex(int index);
+	int size();
 	~TEXTCOUT2();
 };
 

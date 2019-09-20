@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "pch.h"
 #include "Player.h"
+#include "TEXTCOUT2.h"
 
 Player::Player()
 {
@@ -93,7 +94,7 @@ list <DLLObjetos*> &Player::GetObjects()
 	return _DLLObjetos;
 }
 
-void Player::showInventory()
+void Player::showInventory(TEXTCOUT2 &main)
 {
 	list <Weapon*> weaponlist;
 	list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
@@ -111,10 +112,12 @@ void Player::showInventory()
 
 	int weaponN = 0;
 	cout << "Armas------------------------------------------------" << endl;
+	main.addText("Armas------------------------------------------------\n");
 	for (weaponlistitr = weaponlist.begin(); weaponlistitr != weaponlist.end(); weaponlistitr++)
 	{
 		cout << "Arma [" << weaponN << "]------------" << endl;
-		(**weaponlistitr).showStats();
+		main.addText("Arma" + std::to_string(weaponN) + "]-------\n");
+		(**weaponlistitr).showStats(main);
 		weaponN++;
 	}
 	cout << "-----------------------------------------------------" << endl;
@@ -204,7 +207,7 @@ void Player::SetExp(int exp)
 	}
 }
 
-int Player::makeDamageWhitSpell()
+int Player::makeDamageWhitSpell(TEXTCOUT2 &main)
 {
 	int Result = 1;
 	if (_currentspell.EffectActiveWS())
@@ -217,10 +220,12 @@ int Player::makeDamageWhitSpell()
 				srand(time(0));
 				Result += (rand() % 10);
 				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de quemadura";
+				main.addText("suma " + std::to_string(Result) + "porque te hechizo hizo quemadura\n");
 			}
 			else
 			{
 				std::cout << "No tienes suficiente mana" << std::endl;
+				main.addText("NO tienes suficiente Mana\n");
 			}
 			
 		}
@@ -236,10 +241,12 @@ int Player::makeDamageWhitSpell()
 				srand(time(0));
 				Result += (rand() % 10);
 				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de envenenamiento";
+				main.addText("suma " + std::to_string(Result) + "porque te hechizo hizo envenenar\n");
 			}
 			else
 			{
 				std::cout << "No tienes suficiente mana" << std::endl;
+				main.addText("NO tienes suficiente Mana\n");
 			}
 		}
 	}
@@ -253,10 +260,12 @@ int Player::makeDamageWhitSpell()
 				srand(time(0));
 				Result += (rand() % 10);
 				std::cout << "Suma " << Result << " Porque tu " << " hechizo " << " hizo un efecto de hielo";
+				main.addText("suma " + std::to_string(Result) + "porque te hechizo hizo hielo\n");
 			}
 			else
 			{
 				std::cout << "No tienes suficiente mana" << std::endl;
+				main.addText("NO tienes suficiente Mana\n");
 			}
 		}
 	}

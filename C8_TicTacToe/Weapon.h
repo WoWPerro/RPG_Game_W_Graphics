@@ -2,6 +2,7 @@
 #include "DLLObjetos2.h"
 #include <time.h>
 #include <iostream>
+#include "TEXTCOUT2.h"
 
 using std::cout;
 using std::endl;
@@ -26,7 +27,7 @@ public:
 	void setEffect();
 	bool EffectActive();
 	int getEffectType();
-	void showStats();
+	void showStats(TEXTCOUT2 &main);
 	Weapon();
 	Weapon(int type);
 	~Weapon();

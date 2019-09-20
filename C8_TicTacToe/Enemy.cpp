@@ -31,6 +31,16 @@ Enemy::Enemy(int type, int id)
 		_maxvida = 30;
 		_currentvida = 30;
 		break;
+	case 2:
+		_name = "eskeleton";
+		_maxvida = 50;
+		_currentvida = 50;
+		break;
+	case 3:
+		_name = "boss";
+		_maxvida = 100;
+		_currentvida = 100;
+		break;
 	}
 }
 

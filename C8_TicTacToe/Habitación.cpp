@@ -6,6 +6,12 @@ Habitación::Habitación()
 {
 }
 
+void Habitación::SetTEXTCOUT(TEXTCOUT2 &main)
+{
+	//_main = new TEXTCOUT2;
+	//*_main = main;
+}
+
 int Habitación::GetNumH()
 {
 	return num;
@@ -16,18 +22,20 @@ std::forward_list <Puerta> &Habitación::Getpuertas()
 	return _puertas;
 }
 
-void Habitación::LeerHabitacion()
+void Habitación::LeerHabitacion(TEXTCOUT2 &_main)
 {
 	if (!_read)
 	{
 		int counter = 0;
-		std::cout << "============================================================================" << std::endl;		
+		std::cout << "============================================================================" << std::endl;
 		std::cout << _descripcion << std::endl;
 		if (_DLLObjetos) {
 			std::list <DLLObjetos*>::iterator DLLObjetosit;
 			for (DLLObjetosit = _DLLObjetos->begin(); DLLObjetosit != _DLLObjetos->end(); DLLObjetosit++)
 			{
 				std::cout << "Ves: " << (*DLLObjetosit)->GetName() << " ["<< counter << "]"<< std::endl;
+				_main.addText("Ves :" + (*DLLObjetosit)->GetName() + '\n');
+				_main.addText("numero :" + std::to_string(counter) + '\n');
 				counter++;
 			}
 		}
@@ -38,6 +46,7 @@ void Habitación::LeerHabitacion()
 		{
 			counterLlaves++;
 			std::cout << "Ves: " << counterLlaves << " LLaves" << std::endl;
+			_main.addText("Ves Laves: " + std::to_string(counterLlaves) + '\n');
 		}
 
 		std::forward_list <Puerta>::iterator puertasit;
@@ -48,15 +57,18 @@ void Habitación::LeerHabitacion()
 			if (puertasit->GetAbierta())
 			{
 				std::cout << "Puerta [Que lleva al cuarto " << puertasit->GetID() << "] abierta" << std::endl;
+				_main.addText("Puerta abierta que lleva al cuarto " + std::to_string(puertasit->GetID()) + '\n');
 			}
 			else if (!puertasit->GetAbierta())
 			{
 				std::cout << "Puerta [Que lleva al cuarto (" << puertasit->GetID() << ")] cerrada" << std::endl;
+				_main.addText("Puerta cerrada que lleva al cuarto " + std::to_string(puertasit->GetID()) + '\n');
 			}			
 		}
 
 		std::list <Enemy>::iterator enemigosit;
 		std::cout << "Ves Enemigos" << std::endl;
+		_main.addText("VesEnemigos \n");
 		for (enemigosit = _enemigos.begin(); enemigosit != _enemigos.end(); enemigosit++)
 		{		
 			std::cout << "El " << enemigosit->GetName() << "(Enemigo [" << enemigosit->Getid() << "], HP[" << enemigosit->GetVida() << "])" << std::endl;
@@ -167,4 +179,5 @@ string Habitación::Getdescripcion()
 
 Habitación::~Habitación()
 {
+	//delete _main;
 }

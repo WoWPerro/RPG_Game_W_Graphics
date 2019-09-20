@@ -6,6 +6,7 @@
 #include "Habitación.h"
 #include "Weapon.h"
 #include "Spells.h"
+#include "TEXTCOUT2.h"
 #include <time.h>
 
 class Player
@@ -43,7 +44,7 @@ public:
 	int getVida();
 	void setVida(int vida);
 	void SetWeapon(Weapon &weapon);
-	void showInventory();
+	void showInventory(TEXTCOUT2 &main);
 	bool SetCargactual(int carga);
 	list <DLLObjetos*> &GetObjects();
 	string GetName();
@@ -59,7 +60,7 @@ public:
 	void LevelUp();
 	void SetExp(int exp);
 	void SetSpells(Spells& spell);
-	int makeDamageWhitSpell();
+	int makeDamageWhitSpell(TEXTCOUT2 &main);
 	~Player();
 };
 

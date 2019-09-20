@@ -137,33 +137,42 @@ bool Weapon::EffectActive()
 	return _effect;
 }
 
-void Weapon::showStats()
+void Weapon::showStats(TEXTCOUT2 & main)
 {
 	cout << "Nombre: " << _weaponName << endl;
+	main.addText("Nombre: " + _weaponName + "\n");
 	cout << "Danio: " << _damage << endl;
+	main.addText("Danio: " + std::to_string(_damage) + "\n");
 	cout << "Efecto: " << _effect << endl;
+	main.addText("Efecto: " + std::to_string(_effect) + "\n");
+
 	if (_effect)
 	{
 		switch (_typeEffect)
 		{
 		case 1:			
 			cout << "Efecto: Sharpness (Filo) " << endl;
+			main.addText("Efecto: Sharpness(Filo) \n");
 			break;
 
 		case 2:
 			cout << "Efecto: Fire (Fuego) " << endl;
+			main.addText("Efecto: Fire (Fuego) \n");
 			break;
 
 		case 3:
 			cout << "Efecto: Poison (Veneno) " << endl;
+			main.addText("Efecto: Poison (Veneno) \n");
 			break;
 
 		case 4:
 			cout << "Efecto: Freeze (Hielo) " << endl;
+			main.addText("Efecto: Freeze (Hielo) \n");
 			break;
 		}
 	}
 	cout << "Peso: " << DLLObjetos::GetPeso() << endl;
+	main.addText("Peso: " + std::to_string(DLLObjetos::GetPeso()) + "\n");
 }
 
 Weapon::~Weapon()
